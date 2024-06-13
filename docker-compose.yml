@@ -1,14 +1,13 @@
-version: '3.8'
 services:
   db:
     build: .
-    container_name: cats_db_container
+    container_name: reservations_db_container
     platform: linux/x86_64
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: cats_database
+      MYSQL_DATABASE: reservations_database
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:
