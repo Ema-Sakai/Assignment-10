@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS reservations;
+DROP TABLE IF EXISTS reservations_numbers;
 
 CREATE TABLE reservations (
  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -16,4 +17,12 @@ CREATE TABLE reservations (
 );
 
 INSERT INTO reservations (name, reservation_date, reservation_time, email, phone) VALUES
-("名前はにゃんでも登録できちゃうにゃん太郎", "2024-06-13", "0:30", "test@example.com", "02022222222");
+('名前はにゃんでも登録できちゃうにゃん太郎', '2024-06-13', '11:30', 'test@example.com', '02022222222');
+
+CREATE TABLE reservations_numbers (
+  reservation_number VARCHAR(15) PRIMARY KEY,
+  reservation_id INT UNSIGNED,
+  FOREIGN KEY (reservation_id) REFERENCES reservations(id)
+);
+
+INSERT INTO reservations_numbers (reservation_number, reservation_id) VALUES ('061322221', 1);
