@@ -13,7 +13,8 @@ public class ReservationService {
         this.reservationMapper = reservationMapper;
     }
 
-    public Optional<Reservation> findByReservationNumber(String reservationNumber) {
-        return reservationMapper.findByReservationNumber(reservationNumber);
+    public Reservation findByReservationNumber(String reservationNumber) {
+        return reservationMapper.findByReservationNumber(reservationNumber)
+                .orElseThrow(() -> new ReservationNotFoundException("お探しの予約情報は存在しません。正しい予約番号をご確認ください。"));
     }
 }
