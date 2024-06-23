@@ -2,8 +2,6 @@ package org.example.catcafereservation;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class ReservationService {
 
@@ -13,7 +11,8 @@ public class ReservationService {
         this.reservationMapper = reservationMapper;
     }
 
-    public Optional<Reservation> findByReservationNumber(String reservationNumber) {
-        return reservationMapper.findByReservationNumber(reservationNumber);
+    public Reservation findByReservationNumber(String reservationNumber) {
+        return reservationMapper.findByReservationNumber(reservationNumber)
+                .orElseThrow(() -> new ReservationNotFoundException("お探しの予約情報は存在しません。"));
     }
 }

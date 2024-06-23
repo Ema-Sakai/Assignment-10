@@ -18,8 +18,7 @@ public class ReservationController {
 
     @GetMapping("/{reservationNumber}")
     public ResponseEntity<Reservation> getReservation(@PathVariable String reservationNumber) {
-        return reservationService.findByReservationNumber(reservationNumber)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Reservation reservation = reservationService.findByReservationNumber(reservationNumber);
+        return ResponseEntity.ok(reservation);
     }
 }
