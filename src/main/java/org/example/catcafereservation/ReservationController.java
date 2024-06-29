@@ -1,10 +1,12 @@
 package org.example.catcafereservation;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @RestController
 @RequestMapping("/reservations")
@@ -20,5 +22,30 @@ public class ReservationController {
     public ResponseEntity<Reservation> getReservation(@PathVariable String reservationNumber) {
         Reservation reservation = reservationService.findByReservationNumber(reservationNumber);
         return ResponseEntity.ok(reservation);
+    }
+
+    @PostMapping("/reservations")
+    public ResponseEntity<ReservationResponse> insert(@RequestBody ReservationRequest reservationRequest, UriComponentsBuilder uriBuilder) {
+        Reservation reservation = reservationService.insert(
+                reservationRequest.getName(),
+                reservationRequest.getReservationDate(),
+                reservationRequest.getReservationTime(),
+                reservationRequest.getEmail(),
+                reservationRequest.getPhone()
+        );
+
+        String reservationNumber = reservationService.generateReservationNumber();
+
+        URI location = uriBuilder.path("/reservations/{reservation_number}").buildAndExpand(reservation.getId()).toUri();
+
+        ReservationResponse body = new ReservationResponse(
+                "以下の通り予約が完了しました。",
+                reservation.getReservationDate().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日")),
+                reservation.getReservationTime().format(DateTimeFormatter.ofPattern("HH時mm分")),
+                reservation.getName(),
+                reservationNumber
+        );
+
+        return ResponseEntity.created(location).body(body);
     }
 }
