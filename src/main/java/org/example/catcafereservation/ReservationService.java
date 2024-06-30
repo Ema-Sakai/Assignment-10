@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Random;
 
 @Service
 public class ReservationService {
@@ -25,4 +27,21 @@ public class ReservationService {
         return user;
     }
 
+    public String generateReservationNumber(LocalDate reservationDate, Integer id) {
+        String randomChars = generateRandomChars();
+        String datePart = reservationDate.format(DateTimeFormatter.ofPattern("MMdd"));
+        return randomChars + datePart + String.format("%04d", id);
+    }
+
+    private String generateRandomChars() {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        StringBuilder randomChars = new StringBuilder();
+        Random rnd = new Random();
+        for (int i = 0; i < 2; i++) {
+            randomChars.append(chars.charAt(rnd.nextInt(chars.length())));
+        }
+        return randomChars.toString();
+
+
+    }
 }

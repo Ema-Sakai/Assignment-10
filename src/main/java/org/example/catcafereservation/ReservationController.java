@@ -5,8 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @RestController
 @RequestMapping("/reservations")
@@ -34,7 +33,7 @@ public class ReservationController {
                 reservationRequest.getPhone()
         );
 
-        String reservationNumber = reservationService.generateReservationNumber();
+        String reservationNumber = reservationService.generateReservationNumber(reservation.getReservationDate(), reservation.getId());
 
         URI location = uriBuilder.path("/reservations/{reservation_number}").buildAndExpand(reservation.getId()).toUri();
 
