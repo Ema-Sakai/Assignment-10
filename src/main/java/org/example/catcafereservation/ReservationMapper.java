@@ -13,7 +13,7 @@ public interface ReservationMapper {
     @Select("SELECT r.* FROM reservations r INNER JOIN reservations_numbers rn ON r.id = rn.reservation_id WHERE rn.reservation_number = #{reservationNumber}")
     Optional<Reservation> findByReservationNumber(String reservationNumber);
 
-    @Insert("INSERT INTO reservations (name, reservation_date, reservation_time, email, phone) VALUES (#{name}, #{reservation_date}), #{reservation_time}), #{email}), #{phone})")
+    @Insert("INSERT INTO reservations (name, reservation_date, reservation_time, email, phone) VALUES (#{name}, #{reservationDate}), #{reservationTime}), #{email}), #{phone})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(Reservation reservation);
 }
