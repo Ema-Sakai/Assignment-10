@@ -29,8 +29,8 @@ public class ReservationService {
 
     public String generateReservationNumber(LocalDate reservationDate, Integer id) {
         String randomChars = generateRandomChars();
-        String datePart = reservationDate.format(DateTimeFormatter.ofPattern("MMdd"));
-        return randomChars + datePart + String.format("%04d", id);
+        String timePart = reservationDate.format(DateTimeFormatter.ofPattern("mmss"));
+        return randomChars + timePart + String.format("%04d", id);
     }
 
     private String generateRandomChars() {
