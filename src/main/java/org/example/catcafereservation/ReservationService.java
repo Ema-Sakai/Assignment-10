@@ -3,6 +3,7 @@ package org.example.catcafereservation;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
@@ -22,15 +23,15 @@ public class ReservationService {
     }
 
     public Reservation insert(String name, LocalDate reservationDate, LocalTime reservationTime, String email, String phone) {
-        Reservation user = new Reservation(name, reservationDate, reservationTime, email, phone);
-        reservationMapper.insert(user);
-        return user;
+        Reservation reservation = new Reservation(name, reservationDate, reservationTime, email, phone);
+        reservationMapper.insert(reservation);
+        return reservation;
     }
 
     public String generateReservationNumber(LocalDate reservationDate, Integer id) {
         String randomChars = generateRandomChars();
-        String timePart = reservationDate.format(DateTimeFormatter.ofPattern("mmss"));
-        return randomChars + timePart + String.format("%04d", id);
+        String timePart = LocalDateTime.now().format(DateTimeFormatter.ofPattern("mmss"));
+        return randomChars + timePart + id;
     }
 
     private String generateRandomChars() {
@@ -41,7 +42,5 @@ public class ReservationService {
             randomChars.append(chars.charAt(rnd.nextInt(chars.length())));
         }
         return randomChars.toString();
-
-
     }
 }
