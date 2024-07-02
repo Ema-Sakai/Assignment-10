@@ -23,7 +23,7 @@ public class ReservationController {
         return ResponseEntity.ok(reservation);
     }
 
-    @PostMapping("/reservations")
+    @PostMapping("/")
     public ResponseEntity<ReservationResponse> insert(@RequestBody ReservationRequest reservationRequest, UriComponentsBuilder uriBuilder) {
         Reservation reservation = reservationService.insert(
                 reservationRequest.getName(),
