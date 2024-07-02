@@ -16,13 +16,13 @@ CREATE TABLE reservations (
  CHECK (phone REGEXP '^[0-9]{11}$') -- スマホで予約を想定し、この形でなければ登録できないようにした。
 );
 
-INSERT INTO reservations (name, reservation_date, reservation_time, email, phone) VALUES
-('名前はにゃんでも登録できちゃうにゃん太郎', '2024-06-13', '11:30', 'test@example.com', '02022222222');
-
 CREATE TABLE reservations_numbers (
   reservation_number VARCHAR(15) PRIMARY KEY,
   reservation_id INT UNSIGNED,
-  FOREIGN KEY (reservation_id) REFERENCES reservations(id)
+  FOREIGN KEY (reservation_id) REFERENCES reservations(id),
+  UNIQUE (reservation_number)
 );
 
-INSERT INTO reservations_numbers (reservation_number, reservation_id) VALUES ('061322221', 1);
+INSERT INTO reservations (name, reservation_date, reservation_time, email, phone) VALUES
+('名前はにゃんでも登録できちゃうにゃん太郎', '2024-07-20', '11:30', 'test@example.com', '02022222222');
+INSERT INTO reservations_numbers (reservation_number, reservation_id) VALUES ('AA12341', 1);
