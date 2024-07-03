@@ -1,6 +1,7 @@
 package org.example.catcafereservation;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,9 +23,14 @@ public class ReservationService {
                 .orElseThrow(() -> new ReservationNotFoundException("お探しの予約情報は存在しません。"));
     }
 
+    @Transactional
     public Reservation insert(String name, LocalDate reservationDate, LocalTime reservationTime, String email, String phone) {
         Reservation reservation = new Reservation(name, reservationDate, reservationTime, email, phone);
         reservationMapper.insert(reservation);
+
+        String reservationNumber = generateReservationNumber(reservationDate, reservation.getId());
+        reservationMapper.insertReservationNumber(reservationNumber, reservation.getId());
+
         return reservation;
     }
 

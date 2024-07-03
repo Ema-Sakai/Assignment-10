@@ -16,4 +16,7 @@ public interface ReservationMapper {
     @Insert("INSERT INTO reservations (name, reservation_date, reservation_time, email, phone) VALUES (#{name}, #{reservationDate}, #{reservationTime}, #{email}, #{phone})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(Reservation reservation);
+
+    @Insert("INSERT INTO reservations_numbers (reservation_number, reservation_id) VALUES (#{reservationNumber}, #{id})")
+    void insertReservationNumber(String reservationNumber, Integer id);
 }
