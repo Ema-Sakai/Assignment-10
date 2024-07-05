@@ -35,7 +35,7 @@ public class ReservationController {
 
         String reservationNumber = reservationService.generateReservationNumber(reservation.getReservationDate(), reservation.getId());
 
-        URI location = uriBuilder.path("/reservations/{reservation_number}").buildAndExpand(reservationNumber).toUri();
+        URI location = uriBuilder.path("/reservations/{reservationNumber}").buildAndExpand(reservationNumber).toUri();
 
         ReservationResponse body = new ReservationResponse(
                 "以下の通り予約が完了しました。",
