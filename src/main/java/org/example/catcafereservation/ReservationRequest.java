@@ -1,8 +1,11 @@
 package org.example.catcafereservation;
 
+import lombok.Getter;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+@Getter
 public class ReservationRequest {
 
     private String name;
@@ -19,23 +22,4 @@ public class ReservationRequest {
         this.phone = phone;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public LocalDate getReservationDate() {
-        return reservationDate;
-    }
-
-    public LocalTime getReservationTime() {
-        return reservationTime;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
 }

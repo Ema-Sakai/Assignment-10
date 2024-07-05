@@ -1,6 +1,9 @@
 package org.example.catcafereservation;
 
+import lombok.Getter;
+
 //レコードクラスへ変換もありだが、クラス拡張の可能性などを考慮し保留。
+@Getter
 public class ReservationResponse {
 
     private final String message;
@@ -17,23 +20,4 @@ public class ReservationResponse {
         this.reservationNumber = reservationNumber;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public String getReservationDate() {
-        return reservationDate;
-    }
-
-    public String getReservationTime() {
-        return reservationTime;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getReservationNumber() {
-        return reservationNumber;
-    }
 }
