@@ -25,13 +25,8 @@ public class ReservationController {
 
     @PostMapping("/")
     public ResponseEntity<ReservationResponse> insert(@RequestBody ReservationRequest reservationRequest, UriComponentsBuilder uriBuilder) {
-        Reservation reservation = reservationService.insert(
-                reservationRequest.getName(),
-                reservationRequest.getReservationDate(),
-                reservationRequest.getReservationTime(),
-                reservationRequest.getEmail(),
-                reservationRequest.getPhone()
-        );
+        Reservation reservation = reservationService.insert(reservationRequest.convertToEntity());
+
 
         String reservationNumber = reservationService.generateReservationNumber(reservation.getReservationDate(), reservation.getId());
 

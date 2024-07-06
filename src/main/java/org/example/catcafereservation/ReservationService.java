@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
@@ -24,11 +23,10 @@ public class ReservationService {
     }
 
     @Transactional
-    public Reservation insert(String name, LocalDate reservationDate, LocalTime reservationTime, String email, String phone) {
-        Reservation reservation = new Reservation(name, reservationDate, reservationTime, email, phone);
+    public Reservation insert(Reservation reservation) {
         reservationMapper.insert(reservation);
 
-        String reservationNumber = generateReservationNumber(reservationDate, reservation.getId());
+        String reservationNumber = generateReservationNumber(reservation.getReservationDate(), reservation.getId());
         reservationMapper.insertReservationNumber(reservationNumber, reservation.getId());
 
         return reservation;

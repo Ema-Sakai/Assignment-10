@@ -22,4 +22,7 @@ public class ReservationRequest {
         this.phone = phone;
     }
 
+    public Reservation convertToEntity() {
+        return new Reservation(this.name, this.reservationDate, this.reservationTime, this.email, this.phone);
+    }
 }
