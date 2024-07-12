@@ -1,12 +1,17 @@
 package org.example.catcafereservation;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Reservation {
 
     private Integer id;
@@ -15,7 +20,6 @@ public class Reservation {
     private LocalTime reservationTime;
     private String email;
     private String phone;
-    @Setter
     private String reservationNumber;
 
     public Reservation(String name, LocalDate reservationDate, LocalTime reservationTime, String email, String phone) {
