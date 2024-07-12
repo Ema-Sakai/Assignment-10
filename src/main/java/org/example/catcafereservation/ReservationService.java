@@ -1,17 +1,14 @@
 package org.example.catcafereservation;
 
+import de.huxhorn.sulky.ulid.ULID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Random;
 
 @Service
 public class ReservationService {
 
     private final ReservationMapper reservationMapper;
+    private final ULID ulid = new ULID();
 
     public ReservationService(ReservationMapper reservationMapper) {
         this.reservationMapper = reservationMapper;
@@ -26,25 +23,14 @@ public class ReservationService {
     public Reservation insert(Reservation reservation) {
         reservationMapper.insert(reservation);
 
-        String reservationNumber = generateReservationNumber(reservation.getReservationDate(), reservation.getId());
+        String reservationNumber = generateReservationNumber();
         reservationMapper.insertReservationNumber(reservationNumber, reservation.getId());
 
+        reservation.setReservationNumber(reservationNumber);
         return reservation;
     }
 
-    public String generateReservationNumber(LocalDate reservationDate, Integer id) {
-        String randomChars = generateRandomChars();
-        String timePart = LocalDateTime.now().format(DateTimeFormatter.ofPattern("mmss"));
-        return randomChars + timePart + id;
-    }
-
-    private String generateRandomChars() {
-        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        StringBuilder randomChars = new StringBuilder();
-        Random rnd = new Random();
-        for (int i = 0; i < 2; i++) {
-            randomChars.append(chars.charAt(rnd.nextInt(chars.length())));
-        }
-        return randomChars.toString();
+    public String generateReservationNumber() {
+        return ulid.nextValue().toString();
     }
 }

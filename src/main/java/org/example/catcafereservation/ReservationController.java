@@ -27,8 +27,7 @@ public class ReservationController {
     public ResponseEntity<ReservationResponse> insert(@RequestBody ReservationRequest reservationRequest, UriComponentsBuilder uriBuilder) {
         Reservation reservation = reservationService.insert(reservationRequest.convertToEntity());
 
-
-        String reservationNumber = reservationService.generateReservationNumber(reservation.getReservationDate(), reservation.getId());
+        String reservationNumber = reservation.getReservationNumber();
 
         URI location = uriBuilder.path("/reservations/{reservationNumber}").buildAndExpand(reservationNumber).toUri();
 

@@ -17,7 +17,7 @@ CREATE TABLE reservations (
 );
 
 CREATE TABLE reservations_numbers (
-  reservation_number VARCHAR(15) PRIMARY KEY,
+  reservation_number VARCHAR(26) PRIMARY KEY,
   reservation_id INT UNSIGNED,
   FOREIGN KEY (reservation_id) REFERENCES reservations(id),
   UNIQUE (reservation_number)
