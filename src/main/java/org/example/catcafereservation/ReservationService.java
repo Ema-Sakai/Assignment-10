@@ -1,18 +1,16 @@
 package org.example.catcafereservation;
 
 import de.huxhorn.sulky.ulid.ULID;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class ReservationService {
 
     private final ReservationMapper reservationMapper;
     private final ULID ulid = new ULID();
-
-    public ReservationService(ReservationMapper reservationMapper) {
-        this.reservationMapper = reservationMapper;
-    }
 
     public Reservation findByReservationNumber(String reservationNumber) {
         return reservationMapper.findByReservationNumber(reservationNumber)

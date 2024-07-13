@@ -1,5 +1,6 @@
 package org.example.catcafereservation;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -9,13 +10,10 @@ import java.time.format.DateTimeFormatter;
 
 @RestController
 @RequestMapping("/reservations")
+@RequiredArgsConstructor
 public class ReservationController {
 
     private final ReservationService reservationService;
-
-    public ReservationController(ReservationService reservationService) {
-        this.reservationService = reservationService;
-    }
 
     @GetMapping("/{reservationNumber}")
     public ResponseEntity<Reservation> getReservation(@PathVariable String reservationNumber) {
