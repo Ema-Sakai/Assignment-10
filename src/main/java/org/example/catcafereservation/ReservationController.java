@@ -1,24 +1,42 @@
 package org.example.catcafereservation;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
+import java.time.format.DateTimeFormatter;
 
 @RestController
 @RequestMapping("/reservations")
+@RequiredArgsConstructor
 public class ReservationController {
 
     private final ReservationService reservationService;
-
-    public ReservationController(ReservationService reservationService) {
-        this.reservationService = reservationService;
-    }
 
     @GetMapping("/{reservationNumber}")
     public ResponseEntity<Reservation> getReservation(@PathVariable String reservationNumber) {
         Reservation reservation = reservationService.findByReservationNumber(reservationNumber);
         return ResponseEntity.ok(reservation);
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<ReservationResponse> insert(@RequestBody ReservationRequest reservationRequest, UriComponentsBuilder uriBuilder) {
+        Reservation reservation = reservationService.insert(reservationRequest.convertToEntity());
+
+        String reservationNumber = reservation.getReservationNumber();
+
+        URI location = uriBuilder.path("/reservations/{reservationNumber}").buildAndExpand(reservationNumber).toUri();
+
+        ReservationResponse body = new ReservationResponse(
+                "以下の通り予約が完了しました。",
+                reservation.getReservationDate().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日")),
+                reservation.getReservationTime().format(DateTimeFormatter.ofPattern("HH時mm分")),
+                reservation.getName(),
+                reservationNumber
+        );
+
+        return ResponseEntity.created(location).body(body);
     }
 }

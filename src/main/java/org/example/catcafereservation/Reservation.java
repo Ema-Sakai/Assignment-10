@@ -1,19 +1,28 @@
 package org.example.catcafereservation;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Reservation {
 
-    private int id;
+    private Integer id;
     private String name;
     private LocalDate reservationDate;
     private LocalTime reservationTime;
     private String email;
     private String phone;
+    private String reservationNumber;
 
-    public Reservation(int id, String name, LocalDate reservationDate, LocalTime reservationTime, String email, String phone) {
-        this.id = id;
+    public Reservation(String name, LocalDate reservationDate, LocalTime reservationTime, String email, String phone) {
         this.name = name;
         this.reservationDate = reservationDate;
         this.reservationTime = reservationTime;
@@ -21,27 +30,13 @@ public class Reservation {
         this.phone = phone;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public LocalDate getReservationDate() {
-        return reservationDate;
-    }
-
-    public LocalTime getReservationTime() {
-        return reservationTime;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPhone() {
-        return phone;
+    public Reservation(String name, LocalDate reservationDate, LocalTime reservationTime, String email, String phone, String reservationNumber) {
+        this.id = null;
+        this.name = name;
+        this.reservationDate = reservationDate;
+        this.reservationTime = reservationTime;
+        this.email = email;
+        this.phone = phone;
+        this.reservationNumber = reservationNumber;
     }
 }
