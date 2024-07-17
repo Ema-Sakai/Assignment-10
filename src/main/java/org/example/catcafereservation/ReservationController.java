@@ -1,6 +1,7 @@
 package org.example.catcafereservation;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,7 +20,7 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @GetMapping("/{reservationNumber}")
-    public ResponseEntity<Reservation> getReservation(@PathVariable String reservationNumber) {
+    public ResponseEntity<Reservation> getReservation(@PathVariable @ValidReservationNumber @NotBlank String reservationNumber) {
         Reservation reservation = reservationService.findByReservationNumber(reservationNumber);
         return ResponseEntity.ok(reservation);
     }
