@@ -1,7 +1,9 @@
 package org.example.catcafereservation;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -11,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 @RestController
 @RequestMapping("/reservations")
 @RequiredArgsConstructor
+@Validated(ValidationOrder.class)
 public class ReservationController {
 
     private final ReservationService reservationService;
@@ -22,7 +25,7 @@ public class ReservationController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<ReservationResponse> insert(@RequestBody ReservationRequest reservationRequest, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<ReservationResponse> insert(@Valid @RequestBody ReservationRequest reservationRequest, UriComponentsBuilder uriBuilder) {
         Reservation reservation = reservationService.insert(reservationRequest.convertToEntity());
 
         String reservationNumber = reservation.getReservationNumber();
