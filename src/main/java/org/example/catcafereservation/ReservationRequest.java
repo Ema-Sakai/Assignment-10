@@ -19,7 +19,7 @@ public class ReservationRequest {
 
     //予約日時はフロント側で入力規則（画面上での選択方法）をコントロールできるためNotNullを採用。
     @NotNull(message = "ご希望の予約日選択は必須です。", groups = ValidationGroups.NotBlankGroup.class)
-    @FutureOrPresent(message = "明日以降のご希望日を選択してください。", groups = ValidationGroups.PatternGroup.class)
+    @Future(message = "明日以降のご希望日を選択してください。", groups = ValidationGroups.PatternGroup.class)
     private LocalDate reservationDate;
 
     @NotNull(message = "ご希望の予約時間選択は必須です。", groups = ValidationGroups.NotBlankGroup.class)
