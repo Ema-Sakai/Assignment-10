@@ -38,6 +38,8 @@ public class ReservationController {
                 reservation.getReservationDate().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日")),
                 reservation.getReservationTime().format(DateTimeFormatter.ofPattern("HH時mm分")),
                 reservation.getName(),
+                reservation.getEmail(),
+                reservation.getPhone(),
                 reservationNumber
         );
 

@@ -15,9 +15,8 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class CustomExceptionHandler {
 
-    @ExceptionHandler(value = ReservationNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleReservationNotFoundException(
-            ReservationNotFoundException ex) {
+    @ExceptionHandler(ReservationNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleReservationNotFoundException(ReservationNotFoundException ex) {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", ZonedDateTime.now().toString());
         body.put("status", HttpStatus.NOT_FOUND.value());
