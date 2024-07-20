@@ -48,13 +48,13 @@ public class ReservationController {
 
     @PutMapping("/{reservationNumber}")
     public ResponseEntity<ReservationResponse> updateReservation(
-            @PathVariable @ValidReservationNumber @NotBlank String reservationNumber,
-            @RequestBody @Valid ReservationUpdateRequest updateRequest) {
+            @PathVariable @ValidReservationNumber String reservationNumber,
+            @RequestBody ReservationUpdateRequest updateRequest) {
 
         Reservation updatedReservation = reservationService.updateReservation(reservationNumber, updateRequest);
 
         ReservationResponse response = new ReservationResponse(
-                "予約情報が更新されました。",
+                "以下の通り予約情報が更新されました。",
                 updatedReservation.getReservationDate().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日")),
                 updatedReservation.getReservationTime().format(DateTimeFormatter.ofPattern("HH時mm分")),
                 updatedReservation.getName(),
