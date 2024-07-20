@@ -31,4 +31,17 @@ public class ReservationService {
     public String generateReservationNumber() {
         return ulid.nextValue().toString();
     }
+
+    @Transactional
+    public Reservation updateReservation(String reservationNumber, ReservationUpdateRequest updateRequest) {
+        Reservation reservation = reservationMapper.findByReservationNumber(reservationNumber)
+                .orElseThrow(() -> new ReservationNotFoundException("お探しの予約情報は存在しません。"));
+
+        reservation.setReservationDate(updateRequest.getReservationDate());
+        reservation.setReservationTime(updateRequest.getReservationTime());
+
+        reservationMapper.update(reservation);
+
+        return reservation;
+    }
 }

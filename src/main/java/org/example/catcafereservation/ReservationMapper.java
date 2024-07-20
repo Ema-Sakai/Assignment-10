@@ -18,4 +18,7 @@ public interface ReservationMapper {
 
     @Insert("INSERT INTO reservations_numbers (reservation_number, reservation_id) VALUES (#{reservationNumber}, #{id})")
     void insertReservationNumber(String reservationNumber, Integer id);
+
+    @Update("UPDATE reservations SET reservation_date = #{reservationDate}, reservation_time = #{reservationTime} WHERE id = #{id}")
+    void update(Reservation reservation);
 }
