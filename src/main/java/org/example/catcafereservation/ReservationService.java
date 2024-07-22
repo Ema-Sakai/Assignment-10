@@ -39,64 +39,44 @@ public class ReservationService {
 
     @Transactional
     public Reservation updateReservation(String reservationNumber, ReservationUpdateRequest updateRequest) {
+        if (reservationNumber == null || reservationNumber.length() != 26) {
+            throw new ReservationUpdateValidationException("予約番号を確認してください。");
+        }
+
         Reservation reservation = reservationMapper.findByReservationNumber(reservationNumber)
                 .orElseThrow(() -> new ReservationNotFoundException("お探しの予約情報は存在しません。"));
 
+        LocalDate currentReservationDate = reservation.getReservationDate();
+        LocalDate newReservationDate = updateRequest.getReservationDate();
+        LocalTime newReservationTime = updateRequest.getReservationTime();
+
+        // 既存の予約日が過去の日付である場合にエラーをスロー
+        if (currentReservationDate.isBefore(LocalDate.now())) {
+            throw new ReservationUpdateValidationException("過去の予約情報は更新できません。");
+        }
+
         Map<String, String> errors = new HashMap<>();
-        boolean isUpdated = false;
-        boolean hasChange = false;
 
-        if (updateRequest.getReservationDate() != null) {
-            if (!updateRequest.getReservationDate().equals(reservation.getReservationDate())) {
-                hasChange = true;
-                try {
-                    validateReservationDate(updateRequest.getReservationDate());
-                    reservation.setReservationDate(updateRequest.getReservationDate());
-                    isUpdated = true;
-                } catch (ReservationUpdateValidationException e) {
-                    errors.putAll(e.getErrors());
-                }
-            }
+        if (newReservationDate == null || !newReservationDate.isAfter(LocalDate.now())) {
+            errors.put("reservationDate", "予約日は翌日以降の日付を選択してください。");
         }
 
-        if (updateRequest.getReservationTime() != null) {
-            if (!updateRequest.getReservationTime().equals(reservation.getReservationTime())) {
-                hasChange = true;
-                try {
-                    validateReservationTime(updateRequest.getReservationTime());
-                    reservation.setReservationTime(updateRequest.getReservationTime());
-                    isUpdated = true;
-                } catch (ReservationUpdateValidationException e) {
-                    errors.putAll(e.getErrors());
-                }
-            }
-        }
-
-        if (!hasChange) {
-            throw new ReservationUpdateValidationException("更新情報を選択してください。", Map.of("update", "現在の予約情報と同じです。変更する場合は、異なる予約日時を指定してください。"));
+        if (newReservationTime == null || newReservationTime.getHour() < 11 || newReservationTime.getHour() > 14 || (newReservationTime.getMinute() != 0 && newReservationTime.getMinute() != 30)) {
+            errors.put("reservationTime", "予約時間は11:00から14:00までの間で、30分単位で選択してください。（例: 11:00、11:30）");
         }
 
         if (!errors.isEmpty()) {
             throw new ReservationUpdateValidationException("予約更新情報が無効です。", errors);
         }
 
-        if (!isUpdated) {
-            throw new ReservationUpdateValidationException("更新する予約情報が指定されていません。", Map.of("update", "予約日または予約時間を指定してください。"));
+        if (newReservationDate.equals(currentReservationDate) && newReservationTime.equals(reservation.getReservationTime())) {
+            throw new ReservationUpdateValidationException("現在の予約情報と同じです。変更する場合は、異なる予約日時を指定してください。");
         }
+
+        reservation.setReservationDate(newReservationDate);
+        reservation.setReservationTime(newReservationTime);
 
         reservationMapper.update(reservation);
         return reservation;
-    }
-
-    private void validateReservationDate(LocalDate date) {
-        if (!date.isAfter(LocalDate.now())) {
-            throw new ReservationUpdateValidationException("予約日が無効です。", Map.of("reservationDate", "予約日は翌日以降の日付を選択してください。"));
-        }
-    }
-
-    private void validateReservationTime(LocalTime time) {
-        if (time.getHour() < 11 || time.getHour() > 14 || (time.getMinute() != 0 && time.getMinute() != 30)) {
-            throw new ReservationUpdateValidationException("予約時間が無効です。", Map.of("reservationTime", "予約時間は11:00から14:00までの間から、30分単位で選択してください。（例: 11:00、11:30）"));
-        }
     }
 }

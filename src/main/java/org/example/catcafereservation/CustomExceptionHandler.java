@@ -25,7 +25,6 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Map<String, Object>> handleConstraintViolationException(ConstraintViolationException ex) {
         Map<String, Object> body = new HashMap<>();
@@ -51,7 +50,9 @@ public class CustomExceptionHandler {
         body.put("status", HttpStatus.BAD_REQUEST.value());
         body.put("error", HttpStatus.BAD_REQUEST.getReasonPhrase());
         body.put("message", ex.getMessage());
-        body.put("errors", ex.getErrors());
+        if (ex.getErrors() != null) {
+            body.put("errors", ex.getErrors());
+        }
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
