@@ -21,4 +21,10 @@ public interface ReservationMapper {
 
     @Update("UPDATE reservations SET reservation_date = #{reservationDate}, reservation_time = #{reservationTime} WHERE id = #{id}")
     void update(Reservation reservation);
+
+    @Delete("DELETE FROM reservations_numbers WHERE reservation_number = #{reservationNumber}")
+    void deleteReservationNumber(String reservationNumber);
+
+    @Delete("DELETE FROM reservations WHERE id = #{id}")
+    void deleteReservation(Integer id);
 }

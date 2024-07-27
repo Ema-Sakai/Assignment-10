@@ -10,6 +10,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/reservations")
@@ -63,6 +65,14 @@ public class ReservationController {
                 updatedReservation.getReservationNumber()
         );
 
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{reservationNumber}")
+    public ResponseEntity<Map<String, String>> deleteReservation(@PathVariable @ValidReservationNumber String reservationNumber) {
+        reservationService.deleteReservation(reservationNumber);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "予約情報を削除いたしました。");
         return ResponseEntity.ok(response);
     }
 }

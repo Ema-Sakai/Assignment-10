@@ -56,4 +56,13 @@ public class ReservationService {
         reservationMapper.update(reservation);
         return reservation;
     }
+
+    @Transactional
+    public void deleteReservation(String reservationNumber) {
+        Reservation reservation = reservationMapper.findByReservationNumber(reservationNumber)
+                .orElseThrow(() -> new ReservationNotFoundException("該当する予約番号は存在しません。"));
+
+        reservationMapper.deleteReservationNumber(reservationNumber);
+        reservationMapper.deleteReservation(reservation.getId());
+    }
 }
