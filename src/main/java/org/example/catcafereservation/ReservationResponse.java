@@ -12,6 +12,8 @@ public class ReservationResponse {
     private final String reservationDate;
     private final String reservationTime;
     private final String name;
+    private final String email;
+    private final String phone;
     private final String reservationNumber;
 
 }

@@ -38,9 +38,31 @@ public class ReservationController {
                 reservation.getReservationDate().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日")),
                 reservation.getReservationTime().format(DateTimeFormatter.ofPattern("HH時mm分")),
                 reservation.getName(),
+                reservation.getEmail(),
+                reservation.getPhone(),
                 reservationNumber
         );
 
         return ResponseEntity.created(location).body(body);
+    }
+
+    @PutMapping("/{reservationNumber}")
+    public ResponseEntity<ReservationResponse> updateReservation(
+            @PathVariable @ValidReservationNumber String reservationNumber,
+            @RequestBody ReservationUpdateRequest updateRequest) {
+
+        Reservation updatedReservation = reservationService.updateReservation(reservationNumber, updateRequest);
+
+        ReservationResponse response = new ReservationResponse(
+                "以下の通り予約情報が更新されました。",
+                updatedReservation.getReservationDate().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日")),
+                updatedReservation.getReservationTime().format(DateTimeFormatter.ofPattern("HH時mm分")),
+                updatedReservation.getName(),
+                updatedReservation.getEmail(),
+                updatedReservation.getPhone(),
+                updatedReservation.getReservationNumber()
+        );
+
+        return ResponseEntity.ok(response);
     }
 }
