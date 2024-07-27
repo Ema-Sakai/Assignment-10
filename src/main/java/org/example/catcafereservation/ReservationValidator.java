@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 public class ReservationValidator {
@@ -19,7 +20,7 @@ public class ReservationValidator {
     }
 
     public void validateReservationNumber(String reservationNumber) {
-        if (reservationNumber == null || reservationNumber.length() != 26) {
+        if (Objects.isNull(reservationNumber) || reservationNumber.length() != 26) {
             throw new ReservationUpdateValidationException(getMessage("reservation.number.invalid"));
         }
     }
@@ -31,11 +32,11 @@ public class ReservationValidator {
             throw new ReservationUpdateValidationException(getMessage("reservation.update.past"));
         }
 
-        if (newReservationDate == null || !newReservationDate.isAfter(LocalDate.now())) {
+        if (Objects.isNull(newReservationDate) || !newReservationDate.isAfter(LocalDate.now())) {
             errors.put("reservationDate", getMessage("reservation.date.future"));
         }
 
-        if (newReservationTime == null || newReservationTime.getHour() < 11 || newReservationTime.getHour() > 14 || (newReservationTime.getMinute() != 0 && newReservationTime.getMinute() != 30)) {
+        if (Objects.isNull(newReservationTime) || newReservationTime.getHour() < 11 || newReservationTime.getHour() > 14 || (newReservationTime.getMinute() != 0 && newReservationTime.getMinute() != 30)) {
             errors.put("reservationTime", getMessage("reservation.time.invalid"));
         }
 
@@ -51,6 +52,9 @@ public class ReservationValidator {
     }
 
     private String getMessage(String code) {
+        if (Objects.isNull(code)) {
+            return "";
+        }
         return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
     }
 }
