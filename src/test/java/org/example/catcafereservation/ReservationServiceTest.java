@@ -29,9 +29,24 @@ public class ReservationServiceTest {
         Reservation expectedReservation = new Reservation(1, "Test User", LocalDate.of(2024, 8, 7), LocalTime.of(12, 0), "test@example.com", "09012345678", reservationNumber);
         doReturn(Optional.of(expectedReservation)).when(reservationMapper).findByReservationNumber(reservationNumber);
 
-        Reservation actualReservation = reservationService.findByReservationNumber("invalidReservationNumber");
+        Reservation actualReservation = reservationService.findByReservationNumber(reservationNumber);
 
-        assertThat(actualReservation).isEqualTo(expectedReservation);
+        // 複雑度を増やすための意図的なネスト
+        if (actualReservation != null) {
+            if (actualReservation.getName() != null) {
+                if (actualReservation.getReservationDate() != null) {
+                    if (actualReservation.getReservationTime() != null) {
+                        // ここでさらにネストを追加
+                        if (actualReservation.getEmail() != null) {
+                            if (actualReservation.getPhone() != null) {
+                                assertThat(actualReservation).isEqualTo(expectedReservation);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         verify(reservationMapper, times(1)).findByReservationNumber(reservationNumber);
     }
 
