@@ -29,7 +29,7 @@ public class ReservationServiceTest {
         Reservation expectedReservation = new Reservation(1, "Test User", LocalDate.of(2024, 8, 7), LocalTime.of(12, 0), "test@example.com", "09012345678", reservationNumber);
         doReturn(Optional.of(expectedReservation)).when(reservationMapper).findByReservationNumber(reservationNumber);
 
-        Reservation actualReservation = reservationService.findByReservationNumber(reservationNumber);
+        Reservation actualReservation = reservationService.findByReservationNumber("invalidReservationNumber");
 
         assertThat(actualReservation).isEqualTo(expectedReservation);
         verify(reservationMapper, times(1)).findByReservationNumber(reservationNumber);
