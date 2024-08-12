@@ -31,22 +31,7 @@ public class ReservationServiceTest {
 
         Reservation actualReservation = reservationService.findByReservationNumber(reservationNumber);
 
-        // 複雑度を増やすための意図的なネスト
-        if (actualReservation != null) {
-            if (actualReservation.getName() != null) {
-                if (actualReservation.getReservationDate() != null) {
-                    if (actualReservation.getReservationTime() != null) {
-                        // ここでさらにネストを追加
-                        if (actualReservation.getEmail() != null) {
-                            if (actualReservation.getPhone() != null) {
-                                assertThat(actualReservation).isEqualTo(expectedReservation);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
+        assertThat(actualReservation).isEqualTo(expectedReservation);
         verify(reservationMapper, times(1)).findByReservationNumber(reservationNumber);
     }
 
