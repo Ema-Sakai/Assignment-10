@@ -53,4 +53,25 @@ public class ReservationServiceTest {
     public void 予約番号が空文字のときにエラーが返されること() {
         assertThrows(ReservationNotFoundException.class, () -> reservationService.findByReservationNumber(""));
     }
+
+    //ここまでがRead機能に対しての単体テスト
+
+    //ここからがCreate機能に対しての単体テスト
+
+    @Test
+    public void 予約が正常に作成されること() {
+        Reservation reservation = new Reservation("Test User", LocalDate.of(2024, 8, 7), LocalTime.of(12, 0), "test@example.com", "09012345678");
+        doNothing().when(reservationMapper).insert(reservation);
+        doNothing().when(reservationMapper).insertReservationNumber(anyString(), eq(reservation.getId()));
+
+        Reservation createdReservation = reservationService.insert(reservation);
+
+        assertThat(createdReservation).isNotNull();
+        assertThat(createdReservation.getReservationNumber()).isNotNull();
+        verify(reservationMapper, times(1)).insert(reservation);
+        verify(reservationMapper, times(1)).insertReservationNumber(anyString(), eq(reservation.getId()));
+    }
+
+    //ここまでがCreate機能に対しての単体テスト
+
 }
