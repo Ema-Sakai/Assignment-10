@@ -110,4 +110,28 @@ public class ReservationServiceTest {
 
     //ここまでがUpdate機能に対しての単体テスト
 
+    //ここからがDelete機能に対しての単体テスト
+    @Test
+    public void 予約が正常に削除されること() {
+        String reservationNumber = "validReservationNumber123";
+        Reservation existingReservation = new Reservation(1, "Test User", LocalDate.of(2024, 8, 7), LocalTime.of(12, 0), "test@example.com", "09012345678", reservationNumber);
+        doReturn(Optional.of(existingReservation)).when(reservationMapper).findByReservationNumber(reservationNumber);
+        doNothing().when(reservationMapper).deleteReservationNumber(reservationNumber);
+        doNothing().when(reservationMapper).deleteReservation(existingReservation.getId());
+
+        reservationService.deleteReservation(reservationNumber);
+
+        verify(reservationMapper, times(1)).findByReservationNumber(reservationNumber);
+        verify(reservationMapper, times(1)).deleteReservationNumber(reservationNumber);
+        verify(reservationMapper, times(1)).deleteReservation(existingReservation.getId());
+    }
+
+    @Test
+    public void 存在しない予約番号を削除しようとしたときにエラーが返されること() {
+        String reservationNumber = "invalidReservationNumber123";
+        doReturn(Optional.empty()).when(reservationMapper).findByReservationNumber(reservationNumber);
+
+        assertThrows(ReservationNotFoundException.class, () -> reservationService.deleteReservation(reservationNumber));
+        verify(reservationMapper, times(1)).findByReservationNumber(reservationNumber);
+    }
 }
