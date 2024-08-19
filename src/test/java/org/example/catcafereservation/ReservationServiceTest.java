@@ -78,6 +78,7 @@ public class ReservationServiceTest {
     //ここまでがCreate機能に対しての単体テスト
 
     //ここからがUpdate機能に対しての単体テスト
+
     @Test
     public void 予約情報が正常に更新されること() {
         String reservationNumber = "validReservationNumber123";
@@ -99,7 +100,7 @@ public class ReservationServiceTest {
     }
 
     @Test
-    public void 存在しない予約情報を更新しようときにエラーが返されること() {
+    public void 存在しない予約情報を更新しようとしたときにエラーが返されること() {
         String reservationNumber = "invalidReservationNumber123";
         ReservationUpdateRequest updateRequest = new ReservationUpdateRequest(LocalDate.of(2024, 8, 8), LocalTime.of(13, 0));
         doReturn(Optional.empty()).when(reservationMapper).findByReservationNumber(reservationNumber);
@@ -111,6 +112,7 @@ public class ReservationServiceTest {
     //ここまでがUpdate機能に対しての単体テスト
 
     //ここからがDelete機能に対しての単体テスト
+    
     @Test
     public void 予約が正常に削除されること() {
         String reservationNumber = "validReservationNumber123";
