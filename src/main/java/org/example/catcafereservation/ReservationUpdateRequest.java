@@ -16,4 +16,9 @@ public class ReservationUpdateRequest {
 
     @Nullable
     private LocalTime reservationTime;
+
+    public ReservationUpdateRequest(LocalDate reservationDate, LocalTime reservationTime) {
+        this.reservationDate = reservationDate;
+        this.reservationTime = reservationTime;
+    }
 }
