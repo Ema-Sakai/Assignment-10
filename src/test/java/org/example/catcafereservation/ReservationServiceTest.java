@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ReservationServiceTest {
+class ReservationServiceTest {
 
     @Mock
     private ReservationMapper reservationMapper;
@@ -31,7 +31,7 @@ public class ReservationServiceTest {
 
     //Read機能に対しての単体テスト
     @Test
-    public void findByReservationNumber_存在する予約番号を指定したときに正常に予約情報が返されること() {
+    void findByReservationNumber_存在する予約番号を指定したときに正常に予約情報が返されること() {
         // Arrange
         String reservationNumber = "validReservationNumber123";
         Reservation expectedReservation = new Reservation(1, "Test User", LocalDate.of(2024, 8, 7), LocalTime.of(12, 0), "test@example.com", "09012345678", reservationNumber);
@@ -46,7 +46,7 @@ public class ReservationServiceTest {
     }
 
     @Test
-    public void findByReservationNumber_存在しない予約番号を指定したときにエラーが返されること() {
+    void findByReservationNumber_存在しない予約番号を指定したときにエラーが返されること() {
         // Arrange
         String reservationNumber = "invalidReservationNumber123";
         when(reservationMapper.findByReservationNumber(reservationNumber)).thenReturn(Optional.empty());
@@ -59,14 +59,14 @@ public class ReservationServiceTest {
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {" ", "   "})
-    public void findByReservationNumber_無効な予約番号でエラーが返されること(String invalidReservationNumber) {
+    void findByReservationNumber_無効な予約番号でエラーが返されること(String invalidReservationNumber) {
         // Act & Assert
         assertThrows(ReservationNotFoundException.class, () -> reservationService.findByReservationNumber(invalidReservationNumber));
     }
 
     //Create機能に対しての単体テスト
     @Test
-    public void insert_予約が正常に作成されること() {
+    void insert_予約が正常に作成されること() {
         // Arrange
         Reservation reservation = new Reservation("Test User", LocalDate.of(2024, 8, 7), LocalTime.of(12, 0), "test@example.com", "09012345678");
         String expectedReservationNumber = "generatedReservationNumber";
@@ -83,7 +83,7 @@ public class ReservationServiceTest {
 
     //Update機能に対しての単体テスト
     @Test
-    public void updateReservation_予約情報が正常に更新されること() {
+    void updateReservation_予約情報が正常に更新されること() {
         // Arrange
         String reservationNumber = "validReservationNumber123";
         Reservation existingReservation = new Reservation(1, "Test User", LocalDate.of(2024, 8, 7), LocalTime.of(12, 0), "test@example.com", "09012345678", reservationNumber);
@@ -104,7 +104,7 @@ public class ReservationServiceTest {
     }
 
     @Test
-    public void updateReservation_存在しない予約情報を更新しようとしたときにエラーが返されること() {
+    void updateReservation_存在しない予約情報を更新しようとしたときにエラーが返されること() {
         // Arrange
         String reservationNumber = "invalidReservationNumber123";
         ReservationUpdateRequest updateRequest = new ReservationUpdateRequest(LocalDate.of(2024, 8, 8), LocalTime.of(13, 0));
@@ -117,7 +117,7 @@ public class ReservationServiceTest {
 
     //Delete機能に対しての単体テスト
     @Test
-    public void deleteReservation_予約が正常に削除されること() {
+    void deleteReservation_予約が正常に削除されること() {
         // Arrange
         String reservationNumber = "validReservationNumber123";
         Reservation existingReservation = new Reservation(1, "Test User", LocalDate.of(2024, 8, 7), LocalTime.of(12, 0), "test@example.com", "09012345678", reservationNumber);
@@ -133,7 +133,7 @@ public class ReservationServiceTest {
     }
 
     @Test
-    public void deleteReservation_存在しない予約番号を削除しようとしたときにエラーが返されること() {
+    void deleteReservation_存在しない予約番号を削除しようとしたときにエラーが返されること() {
         // Arrange
         String reservationNumber = "invalidReservationNumber123";
         when(reservationMapper.findByReservationNumber(reservationNumber)).thenReturn(Optional.empty());
