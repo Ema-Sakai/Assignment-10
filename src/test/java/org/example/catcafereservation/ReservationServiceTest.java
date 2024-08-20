@@ -32,7 +32,7 @@ public class ReservationServiceTest {
         // Arrange
         String reservationNumber = "validReservationNumber123";
         Reservation expectedReservation = new Reservation(1, "Test User", LocalDate.of(2024, 8, 7), LocalTime.of(12, 0), "test@example.com", "09012345678", reservationNumber);
-        doReturn(Optional.of(expectedReservation)).when(reservationMapper).findByReservationNumber(reservationNumber);
+        when(reservationMapper.findByReservationNumber(reservationNumber)).thenReturn(Optional.of(expectedReservation));
 
         // Act
         Reservation actualReservation = reservationService.findByReservationNumber(reservationNumber);
@@ -46,7 +46,7 @@ public class ReservationServiceTest {
     public void findByReservationNumber_存在しない予約番号を指定したときにエラーが返されること() {
         // Arrange
         String reservationNumber = "invalidReservationNumber123";
-        doReturn(Optional.empty()).when(reservationMapper).findByReservationNumber(reservationNumber);
+        when(reservationMapper.findByReservationNumber(reservationNumber)).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(ReservationNotFoundException.class, () -> reservationService.findByReservationNumber(reservationNumber));
@@ -71,8 +71,7 @@ public class ReservationServiceTest {
     public void insert_予約が正常に作成されること() {
         // Arrange
         Reservation reservation = new Reservation("Test User", LocalDate.of(2024, 8, 7), LocalTime.of(12, 0), "test@example.com", "09012345678");
-        doNothing().when(reservationMapper).insert(reservation);
-        doNothing().when(reservationMapper).insertReservationNumber(anyString(), eq(reservation.getId()));
+        String expectedReservationNumber = "generatedReservationNumber";
 
         // Act
         Reservation createdReservation = reservationService.insert(reservation);
@@ -92,21 +91,19 @@ public class ReservationServiceTest {
         String reservationNumber = "validReservationNumber123";
         Reservation existingReservation = new Reservation(1, "Test User", LocalDate.of(2024, 8, 7), LocalTime.of(12, 0), "test@example.com", "09012345678", reservationNumber);
         ReservationUpdateRequest updateRequest = new ReservationUpdateRequest(LocalDate.of(2024, 8, 8), LocalTime.of(13, 0));
-        doReturn(Optional.of(existingReservation)).when(reservationMapper).findByReservationNumber(reservationNumber);
-        doNothing().when(reservationValidator).validateReservationNumber(reservationNumber);
-        doNothing().when(reservationValidator).validateReservationUpdate(any(), any(), any());
-        doNothing().when(reservationValidator).validateNoChanges(any(), any(), any(), any());
-        doNothing().when(reservationMapper).update(existingReservation);
+        when(reservationMapper.findByReservationNumber(reservationNumber)).thenReturn(Optional.of(existingReservation));
 
         // Act
         Reservation updatedReservation = reservationService.updateReservation(reservationNumber, updateRequest);
 
         // Assert
-        assertThat(updatedReservation).isNotNull();
         assertThat(updatedReservation.getReservationDate()).isEqualTo(updateRequest.getReservationDate());
         assertThat(updatedReservation.getReservationTime()).isEqualTo(updateRequest.getReservationTime());
         verify(reservationMapper, times(1)).findByReservationNumber(reservationNumber);
         verify(reservationMapper, times(1)).update(existingReservation);
+        verify(reservationValidator, times(1)).validateReservationNumber(reservationNumber);
+        verify(reservationValidator, times(1)).validateReservationUpdate(any(), any(), any());
+        verify(reservationValidator, times(1)).validateNoChanges(any(), any(), any(), any());
     }
 
     @Test
@@ -114,7 +111,7 @@ public class ReservationServiceTest {
         // Arrange
         String reservationNumber = "invalidReservationNumber123";
         ReservationUpdateRequest updateRequest = new ReservationUpdateRequest(LocalDate.of(2024, 8, 8), LocalTime.of(13, 0));
-        doReturn(Optional.empty()).when(reservationMapper).findByReservationNumber(reservationNumber);
+        when(reservationMapper.findByReservationNumber(reservationNumber)).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(ReservationNotFoundException.class, () -> reservationService.updateReservation(reservationNumber, updateRequest));
@@ -127,9 +124,7 @@ public class ReservationServiceTest {
         // Arrange
         String reservationNumber = "validReservationNumber123";
         Reservation existingReservation = new Reservation(1, "Test User", LocalDate.of(2024, 8, 7), LocalTime.of(12, 0), "test@example.com", "09012345678", reservationNumber);
-        doReturn(Optional.of(existingReservation)).when(reservationMapper).findByReservationNumber(reservationNumber);
-        doNothing().when(reservationMapper).deleteReservationNumber(reservationNumber);
-        doNothing().when(reservationMapper).deleteReservation(existingReservation.getId());
+        when(reservationMapper.findByReservationNumber(reservationNumber)).thenReturn(Optional.of(existingReservation));
 
         // Act
         reservationService.deleteReservation(reservationNumber);
@@ -144,7 +139,7 @@ public class ReservationServiceTest {
     public void deleteReservation_存在しない予約番号を削除しようとしたときにエラーが返されること() {
         // Arrange
         String reservationNumber = "invalidReservationNumber123";
-        doReturn(Optional.empty()).when(reservationMapper).findByReservationNumber(reservationNumber);
+        when(reservationMapper.findByReservationNumber(reservationNumber)).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(ReservationNotFoundException.class, () -> reservationService.deleteReservation(reservationNumber));
