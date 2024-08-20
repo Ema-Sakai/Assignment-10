@@ -2,6 +2,9 @@ package org.example.catcafereservation;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -53,18 +56,13 @@ public class ReservationServiceTest {
         verify(reservationMapper, times(1)).findByReservationNumber(reservationNumber);
     }
 
-    @Test
-    public void 予約番号がNullのときにエラーが返されること() {
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {" ", "   "})
+    public void findByReservationNumber_無効な予約番号でエラーが返されること(String invalidReservationNumber) {
         // Act & Assert
-        assertThrows(ReservationNotFoundException.class, () -> reservationService.findByReservationNumber(null));
+        assertThrows(ReservationNotFoundException.class, () -> reservationService.findByReservationNumber(invalidReservationNumber));
     }
-
-    @Test
-    public void 予約番号が空文字のときにエラーが返されること() {
-        // Act & Assert
-        assertThrows(ReservationNotFoundException.class, () -> reservationService.findByReservationNumber(""));
-    }
-
 
     //Create機能に対しての単体テスト
     @Test
@@ -82,7 +80,6 @@ public class ReservationServiceTest {
         verify(reservationMapper, times(1)).insert(reservation);
         verify(reservationMapper, times(1)).insertReservationNumber(anyString(), eq(reservation.getId()));
     }
-
 
     //Update機能に対しての単体テスト
     @Test
