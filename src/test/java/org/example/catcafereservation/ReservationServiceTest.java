@@ -86,7 +86,9 @@ class ReservationServiceTest {
         // Arrange
         String reservationNumber = "validReservationNumber123";
         Reservation existingReservation = new Reservation(1, "Test User", LocalDate.of(2024, 8, 7), LocalTime.of(12, 0), "test@example.com", "09012345678", reservationNumber);
-        ReservationUpdateRequest updateRequest = new ReservationUpdateRequest(LocalDate.of(2024, 8, 8), LocalTime.of(13, 0));
+        ReservationUpdateRequest updateRequest = mock(ReservationUpdateRequest.class);
+        when(updateRequest.getReservationDate()).thenReturn(LocalDate.of(2024, 8, 8));
+        when(updateRequest.getReservationTime()).thenReturn(LocalTime.of(13, 0));
         when(reservationMapper.findByReservationNumber(reservationNumber)).thenReturn(Optional.of(existingReservation));
 
         // Act
@@ -106,7 +108,9 @@ class ReservationServiceTest {
     void updateReservation_存在しない予約情報を更新しようとしたときにエラーが返されること() {
         // Arrange
         String reservationNumber = "invalidReservationNumber123";
-        ReservationUpdateRequest updateRequest = new ReservationUpdateRequest(LocalDate.of(2024, 8, 8), LocalTime.of(13, 0));
+        ReservationUpdateRequest updateRequest = mock(ReservationUpdateRequest.class);
+        lenient().when(updateRequest.getReservationDate()).thenReturn(LocalDate.of(2024, 8, 8));
+        lenient().when(updateRequest.getReservationTime()).thenReturn(LocalTime.of(13, 0));
         when(reservationMapper.findByReservationNumber(reservationNumber)).thenReturn(Optional.empty());
 
         // Act & Assert
