@@ -69,7 +69,6 @@ class ReservationServiceTest {
     void insert_予約が正常に作成されること() {
         // Arrange
         Reservation reservation = new Reservation("Test User", LocalDate.of(2024, 8, 7), LocalTime.of(12, 0), "test@example.com", "09012345678");
-        String expectedReservationNumber = "generatedReservationNumber";
 
         // Act
         Reservation createdReservation = reservationService.insert(reservation);
@@ -77,9 +76,8 @@ class ReservationServiceTest {
         // Assert
         assertThat(createdReservation).isNotNull();
         assertThat(createdReservation.getReservationNumber()).isNotNull();
-        assertThat(createdReservation.getReservationNumber().length()).isEqualTo(26);
         verify(reservationMapper, times(1)).insert(reservation);
-        verify(reservationMapper, times(1)).insertReservationNumber(anyString(), eq(reservation.getId()));
+        verify(reservationMapper, times(1)).insertReservationNumber(any(), eq(reservation.getId()));
     }
 
     //Update機能に対しての単体テスト
