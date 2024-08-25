@@ -129,9 +129,10 @@ class ReservationServiceTest {
         when(reservationMapper.findByReservationNumber(reservationNumber)).thenReturn(Optional.of(existingReservation));
 
         // Act
-        reservationService.deleteReservation(reservationNumber);
+        Reservation deletedReservation = reservationService.deleteReservation(reservationNumber);
 
         // Assert
+        assertThat(deletedReservation).isEqualTo(existingReservation);
         verify(reservationMapper, times(1)).findByReservationNumber(reservationNumber);
         verify(reservationMapper, times(1)).deleteReservationNumber(reservationNumber);
         verify(reservationMapper, times(1)).deleteReservation(existingReservation.getId());
