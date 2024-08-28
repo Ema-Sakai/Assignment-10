@@ -14,6 +14,7 @@ import java.time.LocalTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -128,14 +129,13 @@ class ReservationServiceTest {
         Reservation existingReservation = new Reservation(1, "Test User", LocalDate.of(2024, 8, 7), LocalTime.of(12, 0), "test@example.com", "09012345678", reservationNumber);
         when(reservationMapper.findByReservationNumber(reservationNumber)).thenReturn(Optional.of(existingReservation));
 
-        // Act
-        Reservation deletedReservation = reservationService.deleteReservation(reservationNumber);
-
-        // Assert
-        assertThat(deletedReservation).isEqualTo(existingReservation);
-        verify(reservationMapper, times(1)).findByReservationNumber(reservationNumber);
-        verify(reservationMapper, times(1)).deleteReservationNumber(reservationNumber);
-        verify(reservationMapper, times(1)).deleteReservation(existingReservation.getId());
+        // Act & Assert
+        assertThatCode(() -> reservationService.deleteReservation(reservationNumber))
+                .doesNotThrowAnyException();
+        verify(reservationMapper).findByReservationNumber(reservationNumber);
+        verify(reservationMapper).deleteReservationNumber(reservationNumber);
+        verify(reservationMapper).deleteReservation(existingReservation.getId());
+        verifyNoMoreInteractions(reservationMapper);
     }
 
     @Test
