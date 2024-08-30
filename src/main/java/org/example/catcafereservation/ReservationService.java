@@ -37,15 +37,13 @@ public class ReservationService {
     }
 
     @Transactional
-    public Reservation updateReservation(String reservationNumber, ReservationUpdateRequest updateRequest) {
+    public Reservation updateReservation(String reservationNumber, LocalDate newReservationDate, LocalTime newReservationTime) {
         reservationValidator.validateReservationNumber(reservationNumber);
 
         Reservation reservation = reservationMapper.findByReservationNumber(reservationNumber)
                 .orElseThrow(() -> new ReservationNotFoundException("お探しの予約情報は存在しません。"));
 
         LocalDate currentReservationDate = reservation.getReservationDate();
-        LocalDate newReservationDate = updateRequest.getReservationDate();
-        LocalTime newReservationTime = updateRequest.getReservationTime();
 
         reservationValidator.validateReservationUpdate(currentReservationDate, newReservationDate, newReservationTime);
         reservationValidator.validateNoChanges(currentReservationDate, reservation.getReservationTime(), newReservationDate, newReservationTime);
