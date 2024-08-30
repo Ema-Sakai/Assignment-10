@@ -78,6 +78,11 @@ class ReservationServiceTest {
         assertThat(createdReservation).isNotNull();
         assertThat(createdReservation.getReservationNumber()).isNotNull();
         assertThat(createdReservation.getReservationNumber().length()).isEqualTo(26);
+        assertThat(createdReservation)
+                .usingRecursiveComparison()
+                .ignoringFields("reservationNumber")
+                .isEqualTo(reservation);
+
         verify(reservationMapper, times(1)).insert(reservation);
         verify(reservationMapper, times(1)).insertReservationNumber(anyString(), eq(reservation.getId()));
     }
