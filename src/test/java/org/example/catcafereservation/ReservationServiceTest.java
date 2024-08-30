@@ -105,18 +105,16 @@ class ReservationServiceTest {
             // Arrange
             String reservationNumber = "validReservationNumber123";
             Reservation existingReservation = new Reservation(1, "Test User", LocalDate.of(2024, 8, 7), LocalTime.of(12, 0), "test@example.com", "09012345678", reservationNumber);
-            ReservationUpdateRequest updateRequest = mock(ReservationUpdateRequest.class);
-            when(updateRequest.getReservationDate()).thenReturn(LocalDate.of(2024, 8, 8));
-            when(updateRequest.getReservationTime()).thenReturn(LocalTime.of(13, 0));
+            LocalDate newReservationDate = LocalDate.of(2024, 8, 8);
+            LocalTime newReservationTime = LocalTime.of(13, 0);
             when(reservationMapper.findByReservationNumber(reservationNumber)).thenReturn(Optional.of(existingReservation));
 
             // Act
-            Reservation updatedReservation = reservationService.updateReservation(reservationNumber, updateRequest);
+            Reservation updatedReservation = reservationService.updateReservation(reservationNumber, newReservationDate, newReservationTime);
 
             // Assert
-            assertThat(updatedReservation.getReservationDate()).isEqualTo(updateRequest.getReservationDate());
-            assertThat(updatedReservation.getReservationTime()).isEqualTo(updateRequest.getReservationTime());
-
+            assertThat(updatedReservation.getReservationDate()).isEqualTo(newReservationDate);
+            assertThat(updatedReservation.getReservationTime()).isEqualTo(newReservationTime);
             verify(reservationMapper, times(1)).findByReservationNumber(reservationNumber);
             verify(reservationMapper, times(1)).update(existingReservation);
             verify(reservationValidator, times(1)).validateReservationNumber(reservationNumber);
@@ -128,14 +126,12 @@ class ReservationServiceTest {
         void 存在しない予約情報を更新しようとしたときにエラーが返されること() {
             // Arrange
             String reservationNumber = "invalidReservationNumber123";
-            ReservationUpdateRequest updateRequest = mock(ReservationUpdateRequest.class);
-            lenient().when(updateRequest.getReservationDate()).thenReturn(LocalDate.of(2024, 8, 8));
-            lenient().when(updateRequest.getReservationTime()).thenReturn(LocalTime.of(13, 0));
+            LocalDate newReservationDate = LocalDate.of(2024, 8, 8);
+            LocalTime newReservationTime = LocalTime.of(13, 0);
             when(reservationMapper.findByReservationNumber(reservationNumber)).thenReturn(Optional.empty());
 
             // Act & Assert
-            assertThrows(ReservationNotFoundException.class, () -> reservationService.updateReservation(reservationNumber, updateRequest));
-
+            assertThrows(ReservationNotFoundException.class, () -> reservationService.updateReservation(reservationNumber, newReservationDate, newReservationTime));
             verify(reservationMapper, times(1)).findByReservationNumber(reservationNumber);
         }
     }
