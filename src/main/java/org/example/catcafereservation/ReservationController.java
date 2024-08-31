@@ -50,7 +50,7 @@ public class ReservationController {
 
     @PutMapping("/{reservationNumber}")
     public ResponseEntity<ReservationResponse> updateReservation(
-            @PathVariable String reservationNumber,
+            @PathVariable @ValidReservationNumber String reservationNumber,
             @RequestBody ReservationUpdateRequest updateRequest) {
 
         Reservation updatedReservation = reservationService.updateReservation(
