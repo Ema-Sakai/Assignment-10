@@ -53,7 +53,11 @@ public class ReservationController {
             @PathVariable @ValidReservationNumber String reservationNumber,
             @RequestBody ReservationUpdateRequest updateRequest) {
 
-        Reservation updatedReservation = reservationService.updateReservation(reservationNumber, updateRequest);
+        Reservation updatedReservation = reservationService.updateReservation(
+                reservationNumber,
+                updateRequest.getReservationDate(),
+                updateRequest.getReservationTime()
+        );
 
         ReservationResponse response = new ReservationResponse(
                 "以下の通り予約情報が更新されました。",
