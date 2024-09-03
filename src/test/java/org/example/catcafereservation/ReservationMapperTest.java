@@ -33,20 +33,20 @@ class ReservationMapperTest {
         void 指定した予約番号の予約情報を取得できること() {
             // Arrange
             String reservationNumber = "01J2K2JKM8Y8QES70ZQ0S73JSR";
-            Reservation expected = new Reservation();
-            expected.setId(1);
-            expected.setName("名前はにゃんでも登録できちゃうにゃん太郎");
-            expected.setReservationDate(LocalDate.of(2024, 9, 20));
-            expected.setReservationTime(LocalTime.of(11, 30));
-            expected.setEmail("test@example.com");
-            expected.setPhone("02022222222");
-            expected.setReservationNumber(reservationNumber);
 
             // Act
             Optional<Reservation> actual = reservationMapper.findByReservationNumber(reservationNumber);
 
             // Assert
-            assertThat(actual).hasValue(expected);
+            assertThat(actual).hasValueSatisfying(reservation -> {
+                assertThat(reservation.getId()).isEqualTo(1);
+                assertThat(reservation.getName()).isEqualTo("名前はにゃんでも登録できちゃうにゃん太郎");
+                assertThat(reservation.getReservationDate()).isEqualTo(LocalDate.of(2024, 9, 20));
+                assertThat(reservation.getReservationTime()).isEqualTo(LocalTime.of(11, 30));
+                assertThat(reservation.getEmail()).isEqualTo("test@example.com");
+                assertThat(reservation.getPhone()).isEqualTo("02022222222");
+                assertThat(reservation.getReservationNumber()).isEqualTo(reservationNumber);
+            });
         }
 
         @Test
