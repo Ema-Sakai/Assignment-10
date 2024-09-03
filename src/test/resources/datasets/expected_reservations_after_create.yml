@@ -1,0 +1,19 @@
+reservations:
+  - id: 1
+    name: "名前はにゃんでも登録できちゃうにゃん太郎"
+    reservation_date: "2024-09-20"
+    reservation_time: "11:30:00"
+    email: "test@example.com"
+    phone: "02022222222"
+  - id: 2
+    name: "新しい予約のにゃん太郎"
+    reservation_date: "2024-10-10"
+    reservation_time: "12:00:00"
+    email: "new@example.com"
+    phone: "09012345678"
+
+reservations_numbers:
+  - reservation_number: "01J2K2JKM8Y8QES70ZQ0S73JSR"
+    reservation_id: 1
+  - reservation_number: "03J2K1JKM8Y8QES70ZQ0S73JSR"
+    reservation_id: 2
