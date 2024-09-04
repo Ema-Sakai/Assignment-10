@@ -33,20 +33,13 @@ class ReservationMapperTest {
         void 指定した予約番号の予約情報を取得できること() {
             // Arrange
             String reservationNumber = "01J2K2JKM8Y8QES70ZQ0S73JSR";
+            Reservation expected = new Reservation(1, "名前はにゃんでも登録できちゃうにゃん太郎", LocalDate.of(2024, 9, 20), LocalTime.of(11, 30), "test@example.com", "02022222222", reservationNumber);
 
             // Act
             Optional<Reservation> actual = reservationMapper.findByReservationNumber(reservationNumber);
 
             // Assert
-            assertThat(actual).hasValueSatisfying(reservation -> {
-                assertThat(reservation.getId()).isEqualTo(1);
-                assertThat(reservation.getName()).isEqualTo("名前はにゃんでも登録できちゃうにゃん太郎");
-                assertThat(reservation.getReservationDate()).isEqualTo(LocalDate.of(2024, 9, 20));
-                assertThat(reservation.getReservationTime()).isEqualTo(LocalTime.of(11, 30));
-                assertThat(reservation.getEmail()).isEqualTo("test@example.com");
-                assertThat(reservation.getPhone()).isEqualTo("02022222222");
-                assertThat(reservation.getReservationNumber()).isEqualTo(reservationNumber);
-            });
+            assertThat(actual).hasValue(expected);
         }
 
         @Test
@@ -73,19 +66,18 @@ class ReservationMapperTest {
         @Transactional
         void 予約情報が登録できること() {
             // Arrange
-            Reservation newReservation = new Reservation("新しい予約のにゃん太郎", LocalDate.of(2024, 10, 10), LocalTime.of(12, 0), "new@example.com", "09012345678");
-            String reservationNumber = "03J2K1JKM8Y8QES70ZQ0S73JSR";
+            Reservation newReservation = new Reservation(null, "新しい予約のにゃん太郎", LocalDate.of(2024, 10, 10), LocalTime.of(12, 0), "new@example.com", "09012345678", "03J2K1JKM8Y8QES70ZQ0S73JSR");
 
             // Act
             reservationMapper.insert(newReservation);
-            reservationMapper.insertReservationNumber(reservationNumber, newReservation.getId());
+            reservationMapper.insertReservationNumber(newReservation.getReservationNumber(), newReservation.getId());
 
             // Assert
-            assertThat(newReservation.getId()).isNotNull().isGreaterThan(0);
-            assertThat(reservationNumber).isNotNull().hasSize(26);
+            Optional<Reservation> actual = reservationMapper.findByReservationNumber(newReservation.getReservationNumber());
+            assertThat(actual).hasValue(newReservation);
 
             // Check for uniqueness
-            Optional<Reservation> duplicateReservation = reservationMapper.findByReservationNumber(reservationNumber);
+            Optional<Reservation> duplicateReservation = reservationMapper.findByReservationNumber(newReservation.getReservationNumber());
             assertThat(duplicateReservation).isPresent();
             assertThat(duplicateReservation.get().getId()).isEqualTo(newReservation.getId());
         }
@@ -107,10 +99,7 @@ class ReservationMapperTest {
 
             // Assert
             Optional<Reservation> actual = reservationMapper.findByReservationNumber("01J2K2JKM8Y8QES70ZQ0S73JSR");
-            assertThat(actual).hasValueSatisfying(reservation -> {
-                assertThat(reservation.getId()).isEqualTo(1);
-                assertThat(reservation.getReservationNumber()).isEqualTo("01J2K2JKM8Y8QES70ZQ0S73JSR");
-            });
+            assertThat(actual).hasValue(updatedReservation);
         }
     }
 
