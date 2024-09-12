@@ -212,4 +212,125 @@ public class ReservationApiIntegrationTest {
                     .andExpect(status().isMethodNotAllowed());
         }
     }
+
+    @Nested
+    class UpdateTests {
+
+        @Test
+        @DataSet(value = "datasets/reservations.yml")
+        @ExpectedDataSet(value = "datasets/expected_reservations_after_update.yml")
+        @Transactional
+        void 指定した予約番号の予約情報を更新できること() throws Exception {
+            // Arrange
+            String updateReservationJson = """
+                    {
+                        "reservationDate": "2024-12-12",
+                        "reservationTime": "14:00"
+                    }
+                    """;
+
+            // Act & Assert
+            mockMvc.perform(MockMvcRequestBuilders.put("/reservations/01J2K2JKM8Y8QES70ZQ0S73JSR")
+                            .contentType("application/json")
+                            .content(updateReservationJson))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json("""
+                            {
+                                "message": "以下の通り予約情報が更新されました。",
+                                "reservationDate": "2024年12月12日",
+                                "reservationTime": "14時00分",
+                                "name": "名前はにゃんでも登録できちゃうにゃん太郎",
+                                "email": "test@example.com",
+                                "phone": "02022222222",
+                                "reservationNumber": "01J2K2JKM8Y8QES70ZQ0S73JSR"
+                            }
+                            """));
+        }
+
+        @Test
+        @Transactional
+        void 未登録予約番号をリクエストした場合にNotFoundとエラーメッセージが返ること() throws Exception {
+            // Arrange
+            String updateReservationJson = """
+                    {
+                        "reservationDate": "2024-12-12",
+                        "reservationTime": "14:00"
+                    }
+                    """;
+
+            // Act & Assert
+            mockMvc.perform(MockMvcRequestBuilders.put("/reservations/00000000000000000000000000")
+                            .contentType("application/json")
+                            .content(updateReservationJson))
+                    .andExpectAll(
+                            status().isNotFound(),
+                            jsonPath("$.message").value("お探しの予約情報は存在しません。"),
+                            jsonPath("$.nextSteps").value("予約番号が正しいことを確認してください。問題が解決しない場合は、カスタマーサポートまでお問い合わせください。")
+                    );
+        }
+
+        @ParameterizedTest
+        @Transactional
+        @CsvSource({
+                "'2024-10-10', '10:00:00'", // 時間が受付外
+                "'2024-09-09', '12:00:00'", // 日付が受付外
+                "'2024-09-09', '10:00:00'"  // 日時共に受付外
+        })
+        void 不正な内容をリクエストした場合にBadRequestとエラーメッセージが返ること(String reservationDate, String reservationTime) throws Exception {
+            // Arrange
+            String invalidUpdateReservationJson = String.format("""
+                    {
+                        "reservationDate": "%s",
+                        "reservationTime": "%s"
+                    }
+                    """, reservationDate, reservationTime);
+
+            // Act & Assert
+            var resultActions = mockMvc.perform(MockMvcRequestBuilders.put("/reservations/01J2K2JKM8Y8QES70ZQ0S73JSR")
+                            .contentType("application/json")
+                            .content(invalidUpdateReservationJson))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.message").value("予約更新情報は無効な値です。"));
+
+            // 条件に応じてエラーメッセージを確認
+            if (reservationDate.equals("2024-09-09")) {
+                resultActions.andExpect(jsonPath("$.errors.reservationDate").value("明日以降のご希望日を選択してください。"));
+            }
+            if (reservationTime.equals("10:00:00")) {
+                resultActions.andExpect(jsonPath("$.errors.reservationTime").value("予約時間は11:00から14:00までの間で、30分単位で選択してください。（例: 11:00、11:30）"));
+            }
+        }
+
+
+        @Test
+        @DataSet(value = "datasets/reservations.yml")
+        @Transactional
+        void 予約内容の変更を加えないままリクエストした場合にBadRequestが返ること() throws Exception {
+            // Arrange
+            String noChangeUpdateReservationJson = """
+                    {
+                        "reservationDate": "2024-09-20",
+                        "reservationTime": "11:30"
+                    }
+                    """;
+
+            // Act & Assert
+            // メッセージの確認はNotFoundと同じなので割愛
+            mockMvc.perform(MockMvcRequestBuilders.put("/reservations/01J2K2JKM8Y8QES70ZQ0S73JSR")
+                            .contentType("application/json")
+                            .content(noChangeUpdateReservationJson))
+                    .andExpect(status().isBadRequest());
+        }
+
+        @Test
+        @Transactional
+        void 空の予約番号を指定した時にMethodNotAllowedが返ること() throws Exception {
+            // Arrange
+            String invalidReservationNumber = "";
+
+            // Act & Assert
+            mockMvc.perform(MockMvcRequestBuilders.put("/reservations/" + invalidReservationNumber))
+                    .andExpect(status().isMethodNotAllowed());
+        }
+    }
 }
