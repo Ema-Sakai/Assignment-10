@@ -144,4 +144,72 @@ public class ReservationApiIntegrationTest {
                     );
         }
     }
+
+    @Nested
+    class ReadTests {
+
+        @Test
+        @DataSet(value = "datasets/reservations.yml")
+        @Transactional
+        void 指定した予約番号の予約情報を取得できること() throws Exception {
+            // Arrange
+            String reservationNumber = "01J2K2JKM8Y8QES70ZQ0S73JSR";
+
+            // Act & Assert
+            mockMvc.perform(get("/reservations/" + reservationNumber))
+                    .andExpectAll(
+                            status().isOk(),
+                            content().json("""
+                                    {
+                                        "id": 1,
+                                        "name": "名前はにゃんでも登録できちゃうにゃん太郎",
+                                        "reservationDate": "2024-09-20",
+                                        "reservationTime": "11:30:00",
+                                        "email": "test@example.com",
+                                        "phone": "02022222222",
+                                        "reservationNumber": "01J2K2JKM8Y8QES70ZQ0S73JSR"
+                                    }
+                                    """));
+        }
+
+        @Test
+        @Transactional
+        void 存在しない予約番号を指定した時にNotFoundとエラーメッセージが返ること() throws Exception {
+            // Arrange
+            String invalidReservationNumber = "00000000000000000000000000";
+
+            // Act & Assert
+            mockMvc.perform(MockMvcRequestBuilders.get("/reservations/" + invalidReservationNumber))
+                    .andExpectAll(
+                            status().isNotFound(),
+                            jsonPath("$.message").value("お探しの予約情報は存在しません。"),
+                            jsonPath("$.nextSteps").value("予約番号が正しいことを確認してください。問題が解決しない場合は、カスタマーサポートまでお問い合わせください。")
+                    );
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"12345shot", "123456789012345678901234567long", "null"})
+        @Transactional
+        void 不正な予約番号を指定した時にBadRequestとエラーメッセージが返ること(String invalidReservationNumber) throws Exception {
+            // Act & Assert
+            mockMvc.perform(MockMvcRequestBuilders.get("/reservations/" + invalidReservationNumber))
+                    .andExpectAll(
+                            status().isBadRequest(),
+                            jsonPath("$.message").value("入力内容に誤りがあります。"),
+                            jsonPath("$.errors['getReservation.reservationNumber']").value("26桁の予約番号を入力してください。")
+                    );
+        }
+
+        @Test
+        @Transactional
+        void 空の予約番号を指定した時にMethodNotAllowedが返ること() throws Exception {
+            // Arrange
+            String invalidReservationNumber = "";
+
+            // Act & Assert
+            // 空文字は受け付けないようにバリデーションをかけているため、メッセージの確認は不要。
+            mockMvc.perform(MockMvcRequestBuilders.get("/reservations/" + invalidReservationNumber))
+                    .andExpect(status().isMethodNotAllowed());
+        }
+    }
 }
