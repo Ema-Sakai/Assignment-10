@@ -333,4 +333,83 @@ public class ReservationApiIntegrationTest {
                     .andExpect(status().isMethodNotAllowed());
         }
     }
+
+    @Nested
+    class DeleteTests {
+
+        @Test
+        @DataSet(value = "datasets/reservations.yml")
+        @ExpectedDataSet(value = "datasets/expected_reservations_after_delete.yml")
+        @Transactional
+        void 予約情報を削除できること() throws Exception {
+            // Arrange
+            String reservationNumber = "01J2K2JKM8Y8QES70ZQ0S73JSR";
+
+            // Act & Assert
+            mockMvc.perform(MockMvcRequestBuilders.delete("/reservations/" + reservationNumber))
+                    .andExpectAll(
+                            status().isOk(),
+                            content().json("""
+                                    {
+                                        "message": "予約情報を削除いたしました。"
+                                    }
+                                    """));
+        }
+
+        @Test
+        @Transactional
+        void 存在しない予約番号を指定した時にNotFoundとエラーメッセージが返ること() throws Exception {
+            // Arrange
+            String invalidReservationNumber = "00000000000000000000000000";
+
+            // Act & Assert
+            mockMvc.perform(MockMvcRequestBuilders.delete("/reservations/" + invalidReservationNumber))
+                    .andExpectAll(
+                            status().isNotFound(),
+                            jsonPath("$.message").value("該当する予約番号は存在しません。"),
+                            jsonPath("$.nextSteps").value("予約番号が正しいことを確認してください。問題が解決しない場合は、カスタマーサポートまでお問い合わせください。")
+                    );
+        }
+
+        @Test
+        @DataSet(value = "datasets/reservations.yml")
+        @Transactional
+        void 削除済みの予約番号をリクエストした場合にNotFoundが返ること() throws Exception {
+            // Arrange
+            String reservationNumber = "01J2K2JKM8Y8QES70ZQ0S73JSR";
+
+            // まず予約を削除
+            mockMvc.perform(MockMvcRequestBuilders.delete("/reservations/" + reservationNumber))
+                    .andExpect(status().isOk());
+
+            // 再度同じ予約番号で削除リクエスト
+            // メッセージの確認はNotFoundと同じなので割愛
+            mockMvc.perform(MockMvcRequestBuilders.delete("/reservations/" + reservationNumber))
+                    .andExpect(status().isNotFound());
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"12345short", "123456789012345678901234567long", "null"})
+        @Transactional
+        void 不正な予約番号を指定した時にBadRequestとエラーメッセージが返ること(String invalidReservationNumber) throws Exception {
+            // Act & Assert
+            mockMvc.perform(MockMvcRequestBuilders.delete("/reservations/" + invalidReservationNumber))
+                    .andExpectAll(
+                            status().isBadRequest(),
+                            jsonPath("$.message").value("入力内容に誤りがあります。"),
+                            jsonPath("$.errors['deleteReservation.reservationNumber']").value("26桁の予約番号を入力してください。")
+                    );
+        }
+
+        @Test
+        @Transactional
+        void 空の予約番号を指定した時にMethodNotAllowedが返ること() throws Exception {
+            // Arrange
+            String invalidReservationNumber = "";
+
+            // Act & Assert
+            mockMvc.perform(MockMvcRequestBuilders.delete("/reservations/" + invalidReservationNumber))
+                    .andExpect(status().isMethodNotAllowed());
+        }
+    }
 }
