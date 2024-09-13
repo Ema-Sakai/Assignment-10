@@ -56,7 +56,7 @@ public class ReservationApiIntegrationTest {
                     """;
 
             // Act & Assert
-            mockMvc.perform(post("/reservations/")
+            mockMvc.perform(MockMvcRequestBuilders.post("/reservations/")
                             .contentType("application/json")
                             .content(newReservationJson))
                     .andExpectAll(
@@ -156,7 +156,7 @@ public class ReservationApiIntegrationTest {
             String reservationNumber = "01J2K2JKM8Y8QES70ZQ0S73JSR";
 
             // Act & Assert
-            mockMvc.perform(get("/reservations/" + reservationNumber))
+            mockMvc.perform(MockMvcRequestBuilders.get("/reservations/" + reservationNumber))
                     .andExpectAll(
                             status().isOk(),
                             content().json("""
