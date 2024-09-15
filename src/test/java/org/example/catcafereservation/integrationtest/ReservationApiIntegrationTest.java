@@ -3,6 +3,7 @@ package org.example.catcafereservation.integrationtest;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.github.database.rider.spring.api.DBRider;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -15,13 +16,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -272,11 +273,12 @@ public class ReservationApiIntegrationTest {
         @ParameterizedTest
         @Transactional
         @CsvSource({
-                "'2024-10-10', '10:00:00'", // 時間が受付外
-                "'2024-09-09', '12:00:00'", // 日付が受付外
-                "'2024-09-09', '10:00:00'"  // 日時共に受付外
+                "'2024-10-10', '10:00:00', 2, '時間が受付外'",
+                "'2024-09-09', '12:00:00', 2, '日付が受付外'",
+                "'2024-09-09', '10:00:00', 3, '日時共に受付外'"
         })
-        void 不正な内容をリクエストした場合にBadRequestとエラーメッセージが返ること(String reservationDate, String reservationTime) throws Exception {
+        void 不正な内容をリクエストした場合にBadRequestとエラーメッセージが返ること(
+                String reservationDate, String reservationTime, int expectedErrorCount, @NotNull String testDescription) throws Exception {
             // Arrange
             String invalidUpdateReservationJson = String.format("""
                     {
@@ -286,18 +288,27 @@ public class ReservationApiIntegrationTest {
                     """, reservationDate, reservationTime);
 
             // Act & Assert
-            var resultActions = mockMvc.perform(MockMvcRequestBuilders.put("/reservations/01J2K2JKM8Y8QES70ZQ0S73JSR")
+            ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.put("/reservations/01J2K2JKM8Y8QES70ZQ0S73JSR")
                             .contentType("application/json")
                             .content(invalidUpdateReservationJson))
-                    .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.message").value("予約更新情報は無効な値です。"));
+                    .andExpectAll(
+                            status().isBadRequest(),
+                            jsonPath("$.message").value("予約更新情報は無効な値です。"),
+                            jsonPath("$.errors").isMap(),
+                            jsonPath("$.errors.*", hasSize(expectedErrorCount - 1)) // 共通メッセージを除いたエラー数
+                    );
 
-            // 条件に応じてエラーメッセージを確認
-            if (reservationDate.equals("2024-09-09")) {
-                resultActions.andExpect(jsonPath("$.errors.reservationDate").value("明日以降のご希望日を選択してください。"));
-            }
-            if (reservationTime.equals("10:00:00")) {
-                resultActions.andExpect(jsonPath("$.errors.reservationTime").value("予約時間は11:00から14:00までの間で、30分単位で選択してください。（例: 11:00、11:30）"));
+            // テストケース別の詳細なアサーション
+            switch (testDescription) {
+                case "時間が受付外" ->
+                        resultActions.andExpect(jsonPath("$.errors.reservationTime").value("予約時間は11:00から14:00までの間で、30分単位で選択してください。（例: 11:00、11:30）"));
+                case "日付が受付外" ->
+                        resultActions.andExpect(jsonPath("$.errors.reservationDate").value("明日以降のご希望日を選択してください。"));
+                case "日時共に受付外" -> resultActions.andExpectAll(
+                        jsonPath("$.errors.reservationDate").value("明日以降のご希望日を選択してください。"),
+                        jsonPath("$.errors.reservationTime").value("予約時間は11:00から14:00までの間で、30分単位で選択してください。（例: 11:00、11:30）")
+                );
+                default -> throw new IllegalArgumentException("Unexpected test description: " + testDescription);
             }
         }
 
