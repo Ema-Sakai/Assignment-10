@@ -272,6 +272,7 @@ public class ReservationApiIntegrationTest {
 
         @ParameterizedTest
         @Transactional
+        @DataSet(value = "datasets/reservations.yml")
         @CsvSource({
                 "'2024-10-10', '10:00:00', 2, '時間が受付外'",
                 "'2024-09-09', '12:00:00', 2, '日付が受付外'",
