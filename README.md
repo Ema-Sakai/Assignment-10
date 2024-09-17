@@ -1,4 +1,5 @@
 # にゃんこカフェ予約管理システムについて
+![ねこカフェ予約サイト](https://github.com/user-attachments/assets/b206680f-2e73-4ac5-8124-344b3b1aa154)
 
 ## 目的（Purpose）
 
