@@ -34,7 +34,7 @@
 ![badge](https://img.shields.io/badge/Canva-%2300C4CC?logo=canva&logoColor=white)
 ![badge](https://img.shields.io/badge/Swagger-%2385EA2D?logo=swagger&logoColor=white)
 ![badge](https://img.shields.io/badge/Shields.io-%23000000?logo=shieldsdotio&logoColor=white)
-![badge]()
+[![badge](https://img.shields.io/badge/%40beginning0401-%23000000?style=social&logo=x)](@beginning0401)
 ![badge]()
 
 
