@@ -7,7 +7,7 @@
 ## 作成背景（Background of Creation）
 RaiseTechの最終課題内容が「CRUD機能をもつREST APIの作成、及びREST APIに対するJUnitを用いたテストコードの作成」となっているため、大好きなにゃんこを顧客の使用背景に織り交ぜたREST APIを作成しました。</br>
 
-ちなみにGitHubのアイコン及びXのアイコンは、最強に可愛い私の愛猫＜まなねこ＞です。
+ちなみにGitHubのアイコン及びXのアイコンは、最強に可愛い私の愛猫です。
 </br>
 </br>
 
