@@ -22,14 +22,21 @@
 ![badge](https://img.shields.io/badge/language-Java_17-%23007396)
 ![badge](https://img.shields.io/badge/springboot-3.2.6-%236DB33F?logo=spring)
 ![badge](https://img.shields.io/badge/MySQL-%234479A1?logo=mysql&logoColor=white)
+![badge](https://img.shields.io/badge/MyBatis-%23DC382D?logoColor=white)
 ![badge](https://img.shields.io/badge/Postman-%23FF6C37?logo=postman&logoColor=white)
 ![badge](https://img.shields.io/badge/Docker-%232496ED?logo=docker&logoColor=white)
+![badge](https://img.shields.io/badge/Junit5-%2325A162?logo=junit5&logoColor=white)
+![badge](https://img.shields.io/badge/JSON-%23000000?logo=json&logoColor=white)
 ![badge](https://img.shields.io/badge/Sonar_Cloud-%23F3702A?logo=sonarcloud&logoColor=white)
 ![badge](https://img.shields.io/badge/IntelliJ_IDEA-%23000000?logo=intellijidea&logoColor=white)
 ![badge](https://img.shields.io/badge/GitHub-%23181717?logo=github&logoColor=white)
 ![badge](https://img.shields.io/badge/GitHub_Actions-%232088FF?logo=githubactions&logoColor=white)
 ![badge](https://img.shields.io/badge/Canva-%2300C4CC?logo=canva&logoColor=white)
 ![badge](https://img.shields.io/badge/Swagger-%2385EA2D?logo=swagger&logoColor=white)
+![badge](https://img.shields.io/badge/Shields.io-%23000000?logo=shieldsdotio&logoColor=white)
+![badge]()
+![badge]()
+
 
 
 ## 機能（Features）
