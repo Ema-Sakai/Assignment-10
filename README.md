@@ -1,22 +1,22 @@
 # ねこカフェ予約管理システムについて [![badge](https://img.shields.io/badge/%40beginning0401（私のXアカウントに飛びます）-%23000000?style=social&logo=x)](https://x.com/beginning0401)
 
 ![ねこカフェ予約サイト](https://github.com/user-attachments/assets/b206680f-2e73-4ac5-8124-344b3b1aa154)
-</br>
-</br>
+<br />
+<br />
 
 ## 作成背景（Background of Creation）
 RaiseTechの最終課題内容が「CRUD機能をもつREST APIの作成、及びREST APIに対するJUnitを用いたテストコードの作成」となっているため、大好きなにゃんこを顧客の使用背景に織り交ぜたREST APIを作成しました。</br>
 
 ちなみにGitHubのアイコン及びXのアイコンは、最強に可愛い私の愛猫です。
-</br>
-</br>
+<br />
+<br />
 
 ## サービス概要 (Service Overview)
 
 このプロジェクトは、とあるねこカフェを利用したい方向けの予約サービスです。</br>
 CRUD機能をもつシンプルながらも使いやすい、先ずは小規模層の利用へ向けた実装内容となっています。
-</br>
-</br>
+<br />
+<br />
 
 ## 開発環境一覧（Development Environment）
 
@@ -28,8 +28,8 @@ CRUD機能をもつシンプルながらも使いやすい、先ずは小規模�
 ![badge](https://img.shields.io/badge/MyBatis-%23DC382D?logoColor=white)
 ![badge](https://img.shields.io/badge/Junit5-%2325A162?logo=junit5&logoColor=white)
 ![badge](https://img.shields.io/badge/JSON-%23000000?logo=json&logoColor=white)
-</br>
-</br>
+<br />
+<br />
 
 ### 使用ツール（Tools Used）
 ![badge](https://img.shields.io/badge/Postman-%23FF6C37?logo=postman&logoColor=white)
@@ -41,8 +41,8 @@ CRUD機能をもつシンプルながらも使いやすい、先ずは小規模�
 ![badge](https://img.shields.io/badge/Canva-%2300C4CC?logo=canva&logoColor=white)
 ![badge](https://img.shields.io/badge/Swagger-%2385EA2D?logo=swagger&logoColor=white)
 ![badge](https://img.shields.io/badge/Shields.io-%23000000?logo=shieldsdotio&logoColor=white)
-</br>
-</br>
+<br />
+<br />
 
 ## 機能一覧 (Feature List)
 
@@ -50,38 +50,37 @@ CRUD機能をもつシンプルながらも使いやすい、先ずは小規模�
 - **予約情報の取得**：予約番号を使用して、予約情報を取得します。
 - **予約情報の更新**：予約番号を使用して、予約日時を更新します。
 - **予約情報の削除**：予約番号を使用して、予約情報を削除します。
-
-</br>
-</br>
+<br />
+<br />
 
 ## ER図
 
-</br>
-</br>
+<br />
+<br />
 
 ## シーケンス図
 
-</br>
-</br>
+<br />
+<br />
 
 ## API仕様書
 
 SwaggerによるAPI仕様書
 
-</br>
-</br>
+<br />
+<br />
 
 ## 自動テスト結果一覧
 
 ここにGitHubActionsからとってきたバッジも、テストごとに載せたい。
 それからテスト結果もなんとか載せられないか？
-</br>
-</br>
+<br />
+<br />
 
 ## 力を入れたところ
 
 バリデーション頑張ったところ書きたい。
 インターフェースで定義されたグループ順序に従って、バリデーションの実行順序を制御したところとか。
 あとはテストケース
-</br>
-</br>
+<br />
+<br />
