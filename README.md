@@ -1,20 +1,23 @@
-# ねこカフェ予約管理システムについて [![badge](https://img.shields.io/badge/%40beginning0401（私のXアカウントに飛びます）-%23000000?style=social&logo=x)](https://x.com/beginning0401)
+# ねこカフェ予約管理システムについて
 
 ![ねこカフェ予約サイト](https://github.com/user-attachments/assets/b206680f-2e73-4ac5-8124-344b3b1aa154)
 <br />
 <br />
 
 ## 作成背景（Background of Creation）
-RaiseTechの最終課題内容が「CRUD機能をもつREST APIの作成、及びREST APIに対するJUnitを用いたテストコードの作成」となっているため、大好きなにゃんこを顧客の使用背景に織り交ぜたREST APIを作成しました。</br>
 
-ちなみにGitHubのアイコン及びXのアイコンは、最強に可愛い私の愛猫です。
+RaiseTechの最終課題内容が「CRUD機能をもつREST APIの作成、及びREST
+APIに対するJUnitを用いたテストコードの作成」となっているため、大好きなにゃんこを顧客の使用背景に織り交ぜたREST
+APIを作成しました。<br />
+
+ちなみにGitHubのアイコン及びXのアイコンは、最強に可愛い私の愛猫です。[![badge](https://img.shields.io/badge/%40beginning0401（私のXアカウントに飛びます）-%23000000?style=social&logo=x)](https://x.com/beginning0401)
 <br />
 <br />
 
 ## サービス概要 (Service Overview)
 
 このプロジェクトは、とあるねこカフェを利用したい方向けの予約サービスです。</br>
-CRUD機能をもつシンプルながらも使いやすい、先ずは小規模層の利用へ向けた実装内容となっています。
+CRUD機能をもつがログイン機能は持たないシンプルながらも使いやすいことを目指した、先ずは小規模層の利用へ向けた実装内容となっています。
 <br />
 <br />
 
@@ -32,6 +35,7 @@ CRUD機能をもつシンプルながらも使いやすい、先ずは小規模�
 <br />
 
 ### 使用ツール（Tools Used）
+
 ![badge](https://img.shields.io/badge/Postman-%23FF6C37?logo=postman&logoColor=white)
 ![badge](https://img.shields.io/badge/Docker-%232496ED?logo=docker&logoColor=white)
 ![badge](https://img.shields.io/badge/Sonar_Cloud-%23F3702A?logo=sonarcloud&logoColor=white)
@@ -50,18 +54,8 @@ CRUD機能をもつシンプルながらも使いやすい、先ずは小規模�
 - **予約情報の取得**：予約番号を使用して、予約情報を取得します。
 - **予約情報の更新**：予約番号を使用して、予約日時を更新します。
 - **予約情報の削除**：予約番号を使用して、予約情報を削除します。
-<br />
-<br />
-
-## ER図
-
-<br />
-<br />
-
-## シーケンス図
-
-<br />
-<br />
+  <br />
+  <br />
 
 ## API仕様書
 
@@ -84,3 +78,12 @@ SwaggerによるAPI仕様書
 あとはテストケース
 <br />
 <br />
+
+## 今後の課題
+
+- デプロイ対応。
+- ねこカフェ運営側の予約状況を確認する画面の実装。
+- 予約作成完了時にメールアドレスへの予約情報転送機能の実装。
+- アカウント作成・ログイン機能の実装。
+  <br />
+  <br />
