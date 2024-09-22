@@ -57,6 +57,30 @@ CRUD機能をもつがログイン機能は持たないシンプルながらも�
   <br />
   <br />
 
+## ER図
+
+今回の設計は、1つの予約情報（`RESERVATIONS`）に対して1つの予約番号（`RESERVATIONS_NUMBERS`）が対応するという、1対1の関係となっています。
+
+```mermaid
+erDiagram
+    RESERVATIONS {
+        INT id PK
+        VARCHAR name
+        DATE reservation_date
+        TIME reservation_time
+        VARCHAR email
+        VARCHAR phone
+    }
+    RESERVATIONS_NUMBERS {
+        VARCHAR reservation_number PK
+        INT reservation_id FK
+    }
+    RESERVATIONS ||--|| RESERVATIONS_NUMBERS: "has"
+```
+
+<br />
+<br />
+
 ## API仕様書
 
 SwaggerによるAPI仕様書
