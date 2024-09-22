@@ -4,7 +4,7 @@
 <br />
 <br />
 
-## 作成背景（Background of Creation）
+- ## 作成背景（Background）
 
 RaiseTechの最終課題内容が「CRUD機能をもつREST APIの作成、及びREST
 APIに対するJUnitを用いたテストコードの作成」となっているため、大好きなにゃんこを顧客の使用背景に織り交ぜたREST
@@ -14,14 +14,14 @@ APIを作成しました。<br />
 <br />
 <br />
 
-## サービス概要 (Service Overview)
+- ## サービス概要 (Service Overview)
 
 このプロジェクトは、とあるねこカフェを利用したい方向けの予約サービスです。</br>
 CRUD機能をもつがログイン機能は持たないシンプルながらも使いやすいことを目指した、先ずは小規模層の利用へ向けた実装内容となっています。
 <br />
 <br />
 
-## 開発環境一覧（Development Environment）
+- ## 開発環境一覧（Development Environment）
 
 ### 使用技術（Technologies Used）
 
@@ -48,7 +48,7 @@ CRUD機能をもつがログイン機能は持たないシンプルながらも�
 <br />
 <br />
 
-## 機能一覧 (Feature List)
+- ## 機能一覧 (Feature List)
 
 - **予約情報の作成**：翌日以降の予約可能時間内で、新しい予約を作成します。
 - **予約情報の取得**：予約番号を使用して、予約情報を取得します。
@@ -57,7 +57,7 @@ CRUD機能をもつがログイン機能は持たないシンプルながらも�
   <br />
   <br />
 
-## ER図
+- ## ER図（Entity Relationship Diagram）
 
 今回の設計は、1つの予約情報（`RESERVATIONS`）に対して1つの予約番号（`RESERVATIONS_NUMBERS`）が対応するという、1対1の関係となっています。
 
@@ -81,7 +81,7 @@ erDiagram
 <br />
 <br />
 
-## シーケンス図
+- ## シーケンス図（Sequence Diagram）
 
 ```mermaid
 sequenceDiagram
@@ -148,21 +148,21 @@ sequenceDiagram
 <br />
 <br />
 
-## API仕様書
+- ## API仕様書（API Specification）
 
 SwaggerによるAPI仕様書
 
 <br />
 <br />
 
-## 自動テスト結果一覧
+- ## テスト結果一覧（Test Results）
 
 ここにGitHubActionsからとってきたバッジも、テストごとに載せたい。
 それからテスト結果もなんとか載せられないか？
 <br />
 <br />
 
-## 力を入れたところ
+- ## 力を入れたところ（Key Focus Areas）
 
 バリデーション頑張ったところ書きたい。
 インターフェースで定義されたグループ順序に従って、バリデーションの実行順序を制御したところとか。
@@ -170,7 +170,7 @@ SwaggerによるAPI仕様書
 <br />
 <br />
 
-## 今後の課題
+- ## 今後の課題（Future Improvements）
 
 - デプロイ対応。
 - ねこカフェ運営側の予約状況を確認する画面の実装。
