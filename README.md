@@ -150,7 +150,7 @@ sequenceDiagram
 
 - ## API仕様書（API Specification）
 
-SwaggerによるAPI仕様書
+[SwaggerによるAPI仕様書（Ver1.0.0）](https://ema-sakai.github.io/Assignment-10/)
 
 <br />
 <br />
