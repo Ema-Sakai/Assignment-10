@@ -175,12 +175,15 @@ sequenceDiagram
 <br />
 <br />
 
-- ## テスト結果一覧（Test Results）
+- ## テスト一覧（Test List）
 
-ここにGitHubActionsからとってきたバッジも、テストごとに載せたい。
-それからテスト結果もなんとか載せられないか？
-<br />
-<br />
+下記テストをGitHub Actionsで実行し、Sonar Cloudで監視しています。
+
+- [単体テスト](src/test/java/org/example/catcafereservation/ReservationServiceTest.java)
+- [DBテスト](src/test/java/org/example/catcafereservation/ReservationMapperTest.java)
+- [結合テスト](src/test/java/org/example/catcafereservation/integrationtest/ReservationApiIntegrationTest.java)
+  <br />
+  <br />
 
 - ## 力を入れたところ（Key Focus Areas）
 
