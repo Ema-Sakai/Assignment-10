@@ -26,7 +26,7 @@ CRUD機能をもつがログイン機能は持たないシンプルながらも�
 ### 使用技術（Technologies Used）
 
 ![badge](https://img.shields.io/badge/language-Java_17-%23007396)
-![badge](https://img.shields.io/badge/springboot-3.2.6-%236DB33F?logo=spring)
+![badge](https://img.shields.io/badge/SpringBoot-3.2.6-%236DB33F?logo=spring)
 ![badge](https://img.shields.io/badge/MySQL-%234479A1?logo=mysql&logoColor=white)
 ![badge](https://img.shields.io/badge/MyBatis-%23DC382D?logoColor=white)
 ![badge](https://img.shields.io/badge/Junit5-%2325A162?logo=junit5&logoColor=white)
