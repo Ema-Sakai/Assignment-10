@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約更新</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="container">
+    <h2>予約更新</h2>
+    <form id="updateReservationForm">
+        <input type="text" id="updateReservationNumber" placeholder="予約番号" required>
+        <input type="date" id="newReservationDate" required>
+        <select id="newReservationTime" required>
+            <option value="">予約時間を選択</option>
+            <option value="11:00">11:00</option>
+            <option value="11:30">11:30</option>
+            <option value="12:00">12:00</option>
+            <option value="12:30">12:30</option>
+            <option value="13:00">13:00</option>
+            <option value="13:30">13:30</option>
+            <option value="14:00">14:00</option>
+        </select>
+        <button type="submit">予約を更新</button>
+    </form>
+    <div id="result"></div>
+    <button onclick="location.href='/menu.html'">戻る</button>
+</div>
+<script src="/js/script.js"></script>
+</body>
+</html>
