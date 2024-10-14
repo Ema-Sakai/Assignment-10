@@ -156,29 +156,31 @@ document.getElementById('deleteReservationForm')?.addEventListener('submit', asy
     e.preventDefault();
     const reservationNumber = document.getElementById('deleteReservationNumber').value;
 
-    try {
-        const response = await fetch(`${API_BASE_URL}/reservations/${reservationNumber}`, {
-            method: 'DELETE',
-        });
-        const data = await response.json();
+    if (confirm('本当にキャンセルしますか？')) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/reservations/${reservationNumber}`, {
+                method: 'DELETE',
+            });
+            const data = await response.json();
 
-        if (!response.ok) {
-            let errorMessage = '予約のキャンセルに失敗しました。';
-            if (data.message) {
-                errorMessage = data.message;
-            }
-            if (data.errors) {
-                for (const [key, value] of Object.entries(data.errors)) {
-                    const fieldName = fieldNames[key] || key;
-                    errorMessage += `<br>${fieldName}: ${value}`;
+            if (!response.ok) {
+                let errorMessage = '予約のキャンセルに失敗しました。';
+                if (data.message) {
+                    errorMessage = data.message;
                 }
+                if (data.errors) {
+                    for (const [key, value] of Object.entries(data.errors)) {
+                        const fieldName = fieldNames[key] || key;
+                        errorMessage += `<br>${fieldName}: ${value}`;
+                    }
+                }
+                document.getElementById('result').innerHTML = `<p>${errorMessage}</p>`;
+            } else {
+                document.getElementById('result').innerHTML = `<p>${data.message}</p>`;
             }
-            document.getElementById('result').innerHTML = `<p>${errorMessage}</p>`;
-        } else {
-            document.getElementById('result').innerHTML = `<p>${data.message}</p>`;
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('result').innerHTML = '<p>予約のキャンセルに失敗しました。もう一度お試しください。</p>';
         }
-    } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('result').innerHTML = '<p>予約のキャンセルに失敗しました。もう一度お試しください。</p>';
     }
 });
