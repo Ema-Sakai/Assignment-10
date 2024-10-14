@@ -11,7 +11,7 @@
     <h2>新規予約</h2>
     <form id="reservationForm">
         <input type="text" id="name" placeholder="お名前" required>
-        <input type="date" id="reservationDate" required>
+        <input type="date" id="reservationDate" required min="2024-01-01" max="2099-12-31">
         <select id="reservationTime" required>
             <option value="">予約時間を選択</option>
             <option value="11:00">11:00</option>

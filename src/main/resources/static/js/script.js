@@ -184,3 +184,32 @@ document.getElementById('deleteReservationForm')?.addEventListener('submit', asy
         }
     }
 });
+
+function setupDateInputs() {
+    const dateInputs = document.querySelectorAll('input[type="date"]');
+    dateInputs.forEach(input => {
+        input.addEventListener('input', function(e) {
+            let value = this.value;
+            if (value) {
+                let date = new Date(value);
+                let year = date.getFullYear();
+
+                // 年が4桁でない場合、修正
+                if (year < 1000 || year > 9999) {
+                    // 現在の年を取得
+                    let currentYear = new Date().getFullYear();
+                    // 年を現在の年に設定
+                    date.setFullYear(currentYear);
+                    // 日付を YYYY-MM-DD 形式に変換
+                    this.value = date.toISOString().split('T')[0];
+                }
+            }
+        });
+    });
+}
+
+// DOMContentLoadedイベントで関数を呼び出す
+document.addEventListener('DOMContentLoaded', function() {
+    setupDateInputs();
+    setupFormValidation();
+});
