@@ -11,7 +11,8 @@ const fieldNames = {
     'updateReservation.reservationNumber': '予約番号',
     'updateReservation.reservationDate': '予約日',
     'updateReservation.reservationTime': '予約時間',
-    'deleteReservation.reservationNumber': '予約番号'
+    'deleteReservation.reservationNumber': '予約番号',
+    'reservationDate': '予約日'
 };
 
 document.getElementById('reservationForm')?.addEventListener('submit', async (e) => {
