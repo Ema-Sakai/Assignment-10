@@ -40,7 +40,6 @@ document.getElementById('reservationForm')?.addEventListener('submit', async (e)
                 errorMessage = data.message;
             }
             if (data.errors) {
-                errorMessage;
                 for (const [key, value] of Object.entries(data.errors)) {
                     const fieldName = fieldNames[key] || key;
                     errorMessage += `<br>${fieldName}: ${value}`;
@@ -48,16 +47,17 @@ document.getElementById('reservationForm')?.addEventListener('submit', async (e)
             }
             document.getElementById('result').innerHTML = `<p>${errorMessage}</p>`;
         } else {
+            const nameWithSuffix = `${data.name}  様`;
             document.getElementById('result').innerHTML = `
                 <h3>以下のとおり予約が完了しました。</h3>
                 <p>予約番号: ${data.reservationNumber}</p>
-                <p>お名前: ${data.name}</p>
+                <p>お名前: ${nameWithSuffix}</p>
                 <p>日付: ${data.reservationDate}</p>
                 <p>時間: ${data.reservationTime}</p>
                 <p>メールアドレス: ${data.email}</p>
                 <p>電話番号: ${data.phone}</p>
                 <h3>にゃんこスタッフ一同、ご来店を楽しみにしております！</h3>
-
+                <h4>※予約番号は予約の確認・変更・キャンセルに必要となりますため、番号をひかえていただきますようお願いいたします。</h4>
             `;
         }
     } catch (error) {
@@ -80,7 +80,6 @@ document.getElementById('checkReservationForm')?.addEventListener('submit', asyn
                 errorMessage = data.message;
             }
             if (data.errors) {
-                errorMessage;
                 for (const [key, value] of Object.entries(data.errors)) {
                     const fieldName = fieldNames[key] || key;
                     errorMessage += `<br>${fieldName}: ${value}`;
@@ -88,9 +87,10 @@ document.getElementById('checkReservationForm')?.addEventListener('submit', asyn
             }
             document.getElementById('result').innerHTML = `<p>${errorMessage}</p>`;
         } else {
+            const nameWithSuffix = `${data.name}  様`;
             document.getElementById('result').innerHTML = `
                 <h3>予約情報</h3>
-                <p>お名前: ${data.name}</p>
+                <p>お名前: ${nameWithSuffix}</p>
                 <p>日付: ${data.reservationDate}</p>
                 <p>時間: ${data.reservationTime}</p>
                 <p>メールアドレス: ${data.email}</p>
@@ -129,7 +129,6 @@ document.getElementById('updateReservationForm')?.addEventListener('submit', asy
                 errorMessage = data.message;
             }
             if (data.errors) {
-                errorMessage;
                 for (const [key, value] of Object.entries(data.errors)) {
                     const fieldName = fieldNames[key] || key;
                     errorMessage += `<br>${fieldName}: ${value}`;
@@ -168,7 +167,6 @@ document.getElementById('deleteReservationForm')?.addEventListener('submit', asy
                 errorMessage = data.message;
             }
             if (data.errors) {
-                errorMessage;
                 for (const [key, value] of Object.entries(data.errors)) {
                     const fieldName = fieldNames[key] || key;
                     errorMessage += `<br>${fieldName}: ${value}`;
