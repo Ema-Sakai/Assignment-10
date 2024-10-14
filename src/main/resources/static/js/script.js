@@ -95,8 +95,8 @@ document.getElementById('checkReservationForm')?.addEventListener('submit', asyn
                 <p>時間: ${data.reservationTime}</p>
                 <p>メールアドレス: ${data.email}</p>
                 <p>電話番号: ${data.phone}</p>
-                <button onclick="location.href='/update-reservation.html'">予約日時を変更</button>
-                <button onclick="location.href='/delete-reservation.html'">予約をキャンセル</button>
+                <button onclick="location.href='/update-reservation.html'">予約日時を変更する</button>
+                <button onclick="location.href='/delete-reservation.html'">予約をキャンセルする</button>
             `;
         }
     } catch (error) {
@@ -142,6 +142,8 @@ document.getElementById('updateReservationForm')?.addEventListener('submit', asy
                 <p>予約番号: ${data.reservationNumber}</p>
                 <p>日付: ${data.reservationDate}</p>
                 <p>時間: ${data.reservationTime}</p>
+                <button onclick="location.href='/check-reservation.html'">予約日時を確認する</button>
+                <button onclick="location.href='/delete-reservation.html'">予約をキャンセルする</button>
             `;
         }
     } catch (error) {
