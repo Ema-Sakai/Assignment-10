@@ -47,6 +47,7 @@ button:hover {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
+    text-align: left;
 }
 img {
     max-width: 100%;
