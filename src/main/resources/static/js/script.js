@@ -185,30 +185,37 @@ document.getElementById('deleteReservationForm')?.addEventListener('submit', asy
     }
 });
 
-function setupDateInputs() {
-    const dateInputs = document.querySelectorAll('input[type="date"]');
-    dateInputs.forEach(input => {
-        input.addEventListener('input', function(e) {
-            let value = this.value;
-            if (value) {
-                let date = new Date(value);
-                let year = date.getFullYear();
+function setupFormValidation() {
+    const form = document.getElementById('reservationForm');
+    const nameInput = document.getElementById('name');
+    const phoneInput = document.getElementById('phone');
 
-                // 年が4桁でない場合、修正
-                if (year < 1000 || year > 9999) {
-                    // 現在の年を取得
-                    let currentYear = new Date().getFullYear();
-                    // 年を現在の年に設定
-                    date.setFullYear(currentYear);
-                    // 日付を YYYY-MM-DD 形式に変換
-                    this.value = date.toISOString().split('T')[0];
-                }
+    if (form) {  // フォームが存在する場合のみ実行
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+            let errorMessage = '';
+
+            // 名前のバリデーション
+            if (nameInput.value.length > 50) {
+                isValid = false;
+                errorMessage += '名前は50文字以内で入力してください。\n';
+            }
+
+            // 電話番号のバリデーション
+            if (!/^[0-9]{11}$/.test(phoneInput.value)) {
+                isValid = false;
+                errorMessage += '電話番号はハイフンなしの11桁で入力してください。\n';
+            }
+
+            if (!isValid) {
+                e.preventDefault(); // フォームの送信を防止
+                alert(errorMessage); // エラーメッセージを表示
             }
         });
-    });
+    }
 }
 
-// DOMContentLoadedイベントで関数を呼び出す
+// DOMContentLoadedイベントで全ての初期化関数を呼び出す
 document.addEventListener('DOMContentLoaded', function() {
     setupDateInputs();
     setupFormValidation();

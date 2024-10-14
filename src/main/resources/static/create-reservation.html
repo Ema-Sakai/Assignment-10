@@ -10,7 +10,7 @@
 <div class="container">
     <h2>新規予約</h2>
     <form id="reservationForm">
-        <input type="text" id="name" placeholder="お名前" required>
+        <input type="text" id="name" placeholder="お名前（50文字以内）" required maxlength="50">
         <input type="date" id="reservationDate" required min="2024-01-01" max="2099-12-31">
         <select id="reservationTime" required>
             <option value="">予約時間を選択</option>
@@ -23,7 +23,7 @@
             <option value="14:00">14:00</option>
         </select>
         <input type="email" id="email" placeholder="メールアドレス" required>
-        <input type="tel" id="phone" placeholder="電話番号（11桁）" required>
+        <input type="tel" id="phone" placeholder="電話番号（ハイフンなしの11桁）" required pattern="[0-9]{11}">
         <button type="submit">予約する</button>
     </form>
     <div id="result"></div>
