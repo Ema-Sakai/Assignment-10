@@ -40,7 +40,7 @@ document.getElementById('reservationForm')?.addEventListener('submit', async (e)
                 errorMessage = data.message;
             }
             if (data.errors) {
-                errorMessage += '<br>詳細:';
+                errorMessage;
                 for (const [key, value] of Object.entries(data.errors)) {
                     const fieldName = fieldNames[key] || key;
                     errorMessage += `<br>${fieldName}: ${value}`;
@@ -49,10 +49,15 @@ document.getElementById('reservationForm')?.addEventListener('submit', async (e)
             document.getElementById('result').innerHTML = `<p>${errorMessage}</p>`;
         } else {
             document.getElementById('result').innerHTML = `
-                <h3>予約完了</h3>
+                <h3>以下のとおり予約が完了しました。</h3>
                 <p>予約番号: ${data.reservationNumber}</p>
+                <p>お名前: ${data.name}</p>
                 <p>日付: ${data.reservationDate}</p>
                 <p>時間: ${data.reservationTime}</p>
+                <p>メールアドレス: ${data.email}</p>
+                <p>電話番号: ${data.phone}</p>
+                <h3>にゃんこスタッフ一同、ご来店を楽しみにしております！</h3>
+
             `;
         }
     } catch (error) {
@@ -75,7 +80,7 @@ document.getElementById('checkReservationForm')?.addEventListener('submit', asyn
                 errorMessage = data.message;
             }
             if (data.errors) {
-                errorMessage += '<br>詳細:';
+                errorMessage;
                 for (const [key, value] of Object.entries(data.errors)) {
                     const fieldName = fieldNames[key] || key;
                     errorMessage += `<br>${fieldName}: ${value}`;
@@ -124,7 +129,7 @@ document.getElementById('updateReservationForm')?.addEventListener('submit', asy
                 errorMessage = data.message;
             }
             if (data.errors) {
-                errorMessage += '<br>詳細:';
+                errorMessage;
                 for (const [key, value] of Object.entries(data.errors)) {
                     const fieldName = fieldNames[key] || key;
                     errorMessage += `<br>${fieldName}: ${value}`;
@@ -133,7 +138,7 @@ document.getElementById('updateReservationForm')?.addEventListener('submit', asy
             document.getElementById('result').innerHTML = `<p>${errorMessage}</p>`;
         } else {
             document.getElementById('result').innerHTML = `
-                <h3>予約更新完了</h3>
+                <h3>以下のとおり予約日時の更新が完了しました。</h3>
                 <p>予約番号: ${data.reservationNumber}</p>
                 <p>日付: ${data.reservationDate}</p>
                 <p>時間: ${data.reservationTime}</p>
@@ -161,7 +166,7 @@ document.getElementById('deleteReservationForm')?.addEventListener('submit', asy
                 errorMessage = data.message;
             }
             if (data.errors) {
-                errorMessage += '<br>詳細:';
+                errorMessage;
                 for (const [key, value] of Object.entries(data.errors)) {
                     const fieldName = fieldNames[key] || key;
                     errorMessage += `<br>${fieldName}: ${value}`;
